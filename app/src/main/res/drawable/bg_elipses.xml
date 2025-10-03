@@ -1,0 +1,36 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Elipse 1 -->
+    <item android:left="0dp">
+        <shape android:shape="oval">
+            <size android:width="300dp" android:height="150dp"/>
+            <gradient
+                android:startColor="#3B0502"
+                android:endColor="#DF150A"
+                android:angle="0"/>
+        </shape>
+    </item>
+
+    <!-- Elipse 2 desplazada a la derecha -->
+    <item android:left="40dp">
+        <shape android:shape="oval">
+            <size android:width="300dp" android:height="150dp"/>
+            <gradient
+                android:startColor="#3B0502"
+                android:endColor="#DF150A"
+                android:angle="0"/>
+        </shape>
+    </item>
+
+    <!-- Elipse 3 desplazada más a la derecha -->
+    <item android:left="80dp">
+        <shape android:shape="oval">
+            <size android:width="300dp" android:height="150dp"/>
+            <gradient
+                android:startColor="#3B0502"
+                android:endColor="#DF150A"
+                android:angle="0"/>
+        </shape>
+    </item>
+
+</layer-list>
