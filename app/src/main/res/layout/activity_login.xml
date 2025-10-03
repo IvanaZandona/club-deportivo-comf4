@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorFondo"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="24dp"
+        >
+
+        <!-- Logo -->
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/logo_comf4"
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/logo" />
+
+        <!-- Texto Iniciar sesión -->
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/iniciar_sesion"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="32sp"
+            android:letterSpacing="0.05"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/bebasneue_regular"
+            />
+
+        <!-- Usuario -->
+        <EditText
+            android:id="@+id/edtUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/usuario"
+            android:textColorHint="@color/colorBlanco"
+            android:drawableStart="@drawable/ic_user"
+            android:inputType="text"
+            android:textColor="@color/colorBlanco"
+            android:fontFamily="@font/nunito_regular"
+            android:background="@drawable/bg_edittext"
+            android:layout_marginTop="24dp"
+            android:padding="12dp"
+            android:drawablePadding="10dp" />
+
+        <!-- Contraseña -->
+        <EditText
+            android:id="@+id/edtContrasena"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/contrasena"
+            android:textColorHint="@color/colorBlanco"
+            android:drawableStart="@drawable/ic_password"
+            android:inputType="textPassword"
+            android:fontFamily="@font/nunito_regular"
+            android:textColor="@color/colorBlanco"
+            android:background="@drawable/bg_edittext"
+            android:layout_marginTop="16dp"
+            android:padding="12dp"
+            android:drawablePadding="10dp"
+            />
+
+        <!-- Botón ingresar -->
+        <Button
+            android:id="@+id/btnIngresar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ingresar"
+            android:fontFamily="@font/nunito_bold"
+            android:textSize="20sp"
+            android:background="@drawable/bg_boton_rojo"
+            android:textColor="@color/colorBlanco"
+            android:layout_marginTop="24dp"
+            android:drawableEnd="@drawable/ic_login"  />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="56dp" />
+
+    </LinearLayout>
+</ScrollView>

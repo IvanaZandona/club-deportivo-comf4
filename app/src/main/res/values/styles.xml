@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Tema de la app -->
+    <style name="Theme.Gimnasio" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@color/colorFondo</item>
+        <item name="android:navigationBarColor">@color/colorFondo</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:buttonStyle">@style/BotonGeneral</item>
+    </style>
+
+    <!-- Estilo general de botones -->
+    <style name="BotonGeneral" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/bg_boton_rojo</item>
+    </style>
+
+</resources>

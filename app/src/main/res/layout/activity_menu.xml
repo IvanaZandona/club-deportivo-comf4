@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorFondo"
+    android:fillViewport="true">
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:gravity="center_horizontal">
+
+    <!-- Encabezado / elipses -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:clipChildren="true"
+        android:clipToPadding="false" >
+
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="195dp"
+          android:layout_gravity="bottom"
+          android:src="@drawable/bg_elipses"
+          android:scaleType="fitCenter"  />
+    </FrameLayout>
+
+    <!-- Perfil con icono -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="32dp"
+        android:gravity="center_vertical">
+
+      <ImageView
+          android:id="@+id/imgPerfil"
+          android:layout_width="60dp"
+          android:layout_height="60dp"
+          android:src="@drawable/ic_perfil"
+          android:contentDescription="@string/usuario" />
+
+      <TextView
+          android:id="@+id/txtUsuario"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/usuario_admin"
+          android:fontFamily="@font/nunito_regular"
+          android:textColor="@color/colorBlanco"
+          android:textSize="18sp"
+          android:layout_marginStart="12dp"/>
+    </LinearLayout>
+
+    <!-- Opciones GridLayout -->
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:columnCount="2"
+        android:layout_marginTop="32dp"
+        android:alignmentMode="alignMargins"
+        android:rowCount="2"
+        android:rowOrderPreserved="false"
+        android:useDefaultMargins="true">
+
+      <!-- Botón cuadrado: Buscar socio -->
+      <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_columnWeight="1"
+          android:orientation="vertical"
+          android:gravity="center_horizontal"
+          android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/bg_boton_cuadro"
+            android:gravity="center">
+
+          <FrameLayout
+              android:id="@+id/btnBuscarSocio"
+              android:layout_width="120dp"
+              android:layout_height="120dp"
+              android:gravity="center"
+              android:clickable="true"
+              android:focusable="true"
+              android:foreground="?attr/selectableItemBackground" >
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_buscar"
+                android:scaleType="fitXY"
+                android:clickable="false"
+                android:focusable="false"
+                android:contentDescription="@string/buscar_socio"
+                />
+          </FrameLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buscar_socio"
+            android:fontFamily="@font/bebasneue_regular"
+            android:textSize="18sp"
+            android:textColor="@color/colorBlanco"
+            android:layout_marginTop="8dp"/>
+      </LinearLayout>
+
+      <!-- Botón cuadrado: Registrar -->
+      <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_columnWeight="1"
+          android:orientation="vertical"
+          android:gravity="center_horizontal"
+          android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/bg_boton_cuadro"
+            android:gravity="center">
+
+          <FrameLayout
+              android:id="@+id/btnRegistrar"
+              android:layout_width="110dp"
+              android:layout_height="120dp"
+              android:gravity="center"
+              android:clickable="true"
+              android:focusable="true"
+              android:foreground="?attr/selectableItemBackground"  >
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_registrar"
+                android:scaleType="fitXY"
+                android:clickable="false"
+                android:focusable="false"
+                android:contentDescription="@string/registrar"
+                />
+          </FrameLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/registrar"
+            android:fontFamily="@font/bebasneue_regular"
+            android:textSize="18sp"
+            android:textColor="@color/colorBlanco"
+            android:layout_marginTop="8dp"/>
+      </LinearLayout>
+
+      <!-- Botón cuadrado: Pagos -->
+      <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_columnWeight="1"
+          android:orientation="vertical"
+          android:gravity="center_horizontal"
+          android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/bg_boton_cuadro"
+            android:gravity="center">
+
+          <FrameLayout
+              android:id="@+id/btnPagos"
+              android:layout_width="120dp"
+              android:layout_height="120dp"
+              android:gravity="center"
+              android:clickable="true"
+              android:focusable="true"
+              android:foreground="?attr/selectableItemBackground"  >
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_pagos"
+                android:scaleType="fitXY"
+                android:clickable="false"
+                android:focusable="false"
+                android:contentDescription="@string/pagos"
+                />
+          </FrameLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pagos"
+            android:fontFamily="@font/bebasneue_regular"
+            android:textSize="18sp"
+            android:textColor="@color/colorBlanco"
+            android:layout_marginTop="8dp"/>
+      </LinearLayout>
+
+      <!-- Botón cuadrado: Listados -->
+      <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_columnWeight="1"
+          android:orientation="vertical"
+          android:gravity="center_horizontal"
+          android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/bg_boton_cuadro"
+            android:gravity="center">
+
+          <FrameLayout
+              android:id="@+id/btnListados"
+              android:layout_width="120dp"
+              android:layout_height="120dp"
+              android:gravity="center"
+              android:clickable="true"
+              android:focusable="true"
+              android:foreground="?attr/selectableItemBackground"  >
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_listado"
+                android:scaleType="fitXY"
+                android:clickable="false"
+                android:focusable="false"
+                android:contentDescription="@string/listados"
+                />
+          </FrameLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/listados"
+            android:fontFamily="@font/bebasneue_regular"
+            android:textSize="18sp"
+            android:textColor="@color/colorBlanco"
+            android:layout_marginTop="8dp"/>
+      </LinearLayout>
+
+    </GridLayout>
+
+    <!-- ESPACIADOR para empujar el contenido inferior -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Botón cerrar sesión -->
+    <TextView
+        android:id="@+id/btnCerrarSesion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:text="@string/cerrar_sesion"
+        android:fontFamily="@font/nunito_bold"
+        android:textSize="16sp"
+        android:textColor="@color/colorRojo"
+        android:drawableStart="@drawable/ic_logout"
+        android:drawablePadding="6dp"
+        android:drawableTint="@color/colorRojo"
+        android:layout_gravity="start"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="14dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        />
+
+    <!-- Fondo inferior -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:layout_gravity="bottom"
+        android:src="@drawable/bg_rectangulo"
+        android:scaleType="fitXY" />
+
+  </LinearLayout>
+
+</ScrollView>
