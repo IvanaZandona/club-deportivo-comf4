@@ -1,5 +1,6 @@
 package com.example.club_deportivo_comf4
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
@@ -42,6 +43,23 @@ class PagoMensualActivity : AppCompatActivity() {
         val radioGroup = findViewById<RadioGroup>(R.id.radioGroupMetodo)
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
             spinnerCuotas.isEnabled = checkedId == R.id.rbTarjeta
+        }
+
+        // --- Botón pagar
+        val btnPagar = findViewById<LinearLayout>(R.id.btnPagar)
+        btnPagar.setOnClickListener {
+            val intent = Intent(this, ComprobantePagoMensualActivity::class.java)
+
+            // enviar datos del pago (para mostrar en el comprobante)
+            val metodoPago = if (rbEfectivo.isChecked) "EFECTIVO" else "TARJETA"
+            val cuotasSeleccionadas = spinnerCuotas.selectedItem?.toString() ?: "1"
+            val monto = 32_000 // dsp lo obtenemos del campo EditText
+
+            intent.putExtra("metodoPago", metodoPago)
+            intent.putExtra("cuotas", cuotasSeleccionadas)
+            intent.putExtra("monto", monto)
+
+            startActivity(intent)
         }
 
     }

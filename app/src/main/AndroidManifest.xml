@@ -12,9 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Clubdeportivocomf4">
-        <activity
-            android:name=".PagoMensualActivity"
-            android:exported="false" />
+
+
         <!-- Login (pantalla inicial) -->
         <activity
             android:name=".MainActivity"
@@ -26,13 +25,27 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Menú principal -->
+        </activity>
+
+        <!-- Menú principal -->
         <activity
             android:name=".MenuActivity"
-            android:exported="false" /> <!-- Menú pagos -->
+            android:exported="false" />
+
+        <!-- Menú pagos -->
         <activity
             android:name=".PagosActivity"
             android:exported="false" />
+
+        <!-- Pago mensual -->
+        <activity
+            android:name=".ComprobantePagoMensualActivity"
+            android:exported="false" />
+        <!-- Comprobante Pago mensual -->
+        <activity
+            android:name=".PagoMensualActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
