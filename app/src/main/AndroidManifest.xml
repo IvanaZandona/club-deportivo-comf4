@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.club_deportivo_comf4">
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.club_deportivo_comf4" >
+    package="com.example.club_deportivo_comf4"
+    xmlns:tools="http://schemas.android.com/tools">
+
 
     <application
         android:allowBackup="true"
@@ -60,18 +60,7 @@
         <activity
             android:name=".RegistroNoSocioActivity"
             android:exported="false" />
-        <activity
-            android:name=".ListadosActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ListadoNoSociosActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ListaSociosActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ListadoSociosVencidosActivity"
-            android:exported="false" />
+
 
 
         <!-- Menú pagos -->

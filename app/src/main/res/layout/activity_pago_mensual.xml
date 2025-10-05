@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:text="@string/pagarCuotaMensual"
+            android:text="pagarCuotaMensual"
             android:textColor="@color/colorBlanco"
             android:textSize="28sp"
             android:fontFamily="@font/bebasneue_regular"
