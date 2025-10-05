@@ -2,7 +2,10 @@
 <resources>
     <color name="colorFondo">#111111</color>
     <color name="colorRojo">#901310</color>
+    <color name="colorRojoApagado">#520A08</color>
     <color name="colorRojoSaturado">#C8211C</color>
     <color name="colorGris">#BDBDBD</color>
     <color name="colorBlanco">#FFFAFA</color>
+    <color name="black">#000000</color>
+    <color name="colorInput">#454141</color>
 </resources>
