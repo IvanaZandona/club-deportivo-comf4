@@ -11,4 +11,15 @@
     <string name="pagos">Pagos</string>
     <string name="listados">Listados</string>
     <string name="logo">Logo</string>
+    <!-- títulos de Listados -->
+    <string name="socios_vencidos">Socios Vencidos</string>
+    <string name="listado_socios">Listado Socios</string>
+    <string name="listado_no_socios">Listado No socios</string>
+    <string name="volver">Volver</string>
+    <!-- títulos de Socios vencidos -->
+    <string name="nombre">Nombre</string>
+    <string name="estado">Estado</string>
+    <string name="fecha_inscripcion">Fecha Inscripción</string>
+    <string name="ultimo_vencimiento">Último vencimiento</string>"
+    <string name="ir_a_pagos">Ir a pagos</string>
 </resources>
