@@ -28,6 +28,12 @@ class MenuActivity : AppCompatActivity() {
         btnBuscar.setOnClickListener {
             // acción del botón
         }*/
+        val btnRegistrarSocio = findViewById<FrameLayout>(R.id.btnRegistrar) // o Button, según tu XML
+        btnRegistrarSocio.setOnClickListener {
+            val intent = Intent(this, activity_registrar::class.java)
+            startActivity(intent)
+        }
+
 
         // Botón (Frame) que abre el submenú de Pagos
         val btnPagos = findViewById<FrameLayout>(R.id.btnPagos)
