@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Club deportivo</string>
     <string name="iniciar_sesion">INICIAR SESIÓN</string>
@@ -9,10 +8,7 @@
     <string name="cerrar_sesion">Cerrar sesión</string>
     <string name="buscar_socio">Buscar socio</string>
     <string name="registrar">Registrar</string>
-    <string name="pagosString">Pagos</string>
-    <string name="pagoMensual">Pago\nMensual</string>
-    <string name="pagoDiario">Pago\nDiario</string>
-    <string name="pagarCuotaMensual">Pagar Cuota Mensual</string>
+    <string name="pagos">Pagos</string>
     <string name="listados">Listados</string>
     <string name="logo">Logo</string>
     <string name="volver">Volver</string>
@@ -39,4 +35,15 @@
     <string name="montoFinal">Monto final:</string>
     <string name="montoNro">$30.000</string>
     <string name="comprobanteNro">Comprobante de pago #XXXX</string>
+    <!-- títulos de Listados -->
+    <string name="socios_vencidos">Socios Vencidos</string>
+    <string name="listado_socios">Listado Socios</string>
+    <string name="listado_no_socios">Listado No socios</string>
+
+    <!-- títulos de Socios vencidos -->
+    <string name="nombre">Nombre</string>
+    <string name="estado">Estado</string>
+    <string name="fecha_inscripcion">Fecha Inscripción</string>
+    <string name="ultimo_vencimiento">Último vencimiento</string>"
+    <string name="ir_a_pagos">Ir a pagos</string>
 </resources>
