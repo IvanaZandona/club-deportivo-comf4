@@ -9,6 +9,21 @@
     <string name="buscar_socio">Buscar socio</string>
     <string name="registrar">Registrar</string>
     <string name="pagos">Pagos</string>
+    <string name="pagoMensual">Pago\nMensual</string>"
+    <string name="pagoDiario">Pago\nDiario</string>
+    <string name="pagarCuotaMensual">Pagar Cuota Mensual</string>
     <string name="listados">Listados</string>
     <string name="logo">Logo</string>
+    <string name="volver">Volver</string>
+    <string name="efectivo">Efectivo</string>"
+    <string name="tarjeta">Tarjeta</string>
+    <string name="cuotas">Cuotas:</string>
+    <string name="pagar">Pagar</string>
+    <string name="ingresarDNI">Ingresar DNI</string>
+    <string name="ingresarMonto">Ingresar Monto</string>
+    <string name="monto">Monto</string>
+    <string name="metodoPago">Método de Pago</string>
+
+
+
 </resources>

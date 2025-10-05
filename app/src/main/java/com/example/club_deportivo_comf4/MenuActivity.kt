@@ -29,5 +29,12 @@ class MenuActivity : AppCompatActivity() {
             // acción del botón
         }*/
 
+        // Botón (Frame) que abre el submenú de Pagos
+        val btnPagos = findViewById<FrameLayout>(R.id.btnPagos)
+        btnPagos.setOnClickListener {
+            val intent = Intent(this, PagosActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 }
