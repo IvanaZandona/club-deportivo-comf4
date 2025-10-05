@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorFondo"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Botón atrás -->
+        <ImageButton
+            android:id="@+id/boton_flecha_atras"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/boton_flecha_atras"
+            android:layout_gravity="start"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="4dp" />
+
+        <!-- Imagen de perfil -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="2dp">
+            <ImageView
+                android:id="@+id/imgPerfil"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_perfil"
+                android:contentDescription="@string/usuario" />
+        </LinearLayout>
+
+        <!-- Título -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Registrar Usuario"
+            android:textSize="28sp"
+            android:fontFamily="@font/bebasneue_regular"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlanco"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="4dp"/>
+
+        <!-- Contenedor de inputs -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:background="@color/colorFondo">
+
+            <!-- Nombre -->
+            <TextView
+                android:id="@+id/tvNombre"
+                android:text="Nombre *"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlanco"
+                android:fontFamily="@font/nunito_semibold"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"/>
+            <EditText
+                android:id="@+id/inputNombre"
+                android:hint="Ingresá el nombre"
+                android:textColorHint="@color/colorInput"
+                android:background="@drawable/bg_input_registrar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"/>
+
+            <!-- Apellido -->
+            <TextView
+                android:id="@+id/tvApellido"
+                android:text="Apellido *"
+                android:textColor="@color/colorBlanco"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_semibold"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"/>
+            <EditText
+                android:id="@+id/inputApellido"
+                android:hint="Ingresá el apellido"
+                android:textColor="#454141"
+                android:textColorHint="@color/colorInput"
+                android:background="@drawable/bg_input_registrar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"/>
+
+            <!-- DNI -->
+            <TextView
+                android:id="@+id/tvDNI"
+                android:text="DNI *"
+                android:textColor="@color/colorBlanco"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_semibold"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"/>
+            <EditText
+                android:id="@+id/inputDNI"
+                android:hint="Ingresá el DNI"
+                android:textColor="#454141"
+                android:textColorHint="@color/colorInput"
+                android:background="@drawable/bg_input_registrar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"/>
+
+            <!-- Fecha de nacimiento -->
+            <TextView
+                android:id="@+id/tvFechaDeNacimiento"
+                android:text="Fecha de nacimiento *"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlanco"
+                android:fontFamily="@font/nunito_semibold"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"/>
+            <EditText
+                android:id="@+id/inputFecha"
+                android:hint="Ingresá la fecha"
+                android:textColor="#454141"
+                android:textColorHint="@color/colorInput"
+                android:background="@drawable/bg_input_registrar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"/>
+
+            <!-- Teléfono -->
+            <TextView
+                android:id="@+id/tvTelefono"
+                android:text="Teléfono *"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlanco"
+                android:fontFamily="@font/nunito_semibold"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"/>
+            <EditText
+                android:id="@+id/inputTelefono"
+                android:hint="Ingresá el teléfono"
+                android:textColor="#454141"
+                android:textColorHint="@color/colorInput"
+                android:background="@drawable/bg_input_registrar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"/>
+
+            <!-- Correo -->
+            <TextView
+                android:id="@+id/tvCorreo"
+                android:text="Correo *"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlanco"
+                android:fontFamily="@font/nunito_semibold"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"/>
+            <EditText
+                android:id="@+id/inputCorreo"
+                android:hint="Ingresá el correo"
+                android:textColor="#454141"
+                android:textColorHint="@color/colorInput"
+                android:background="@drawable/bg_input_registrar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"/>
+
+            <!-- Género -->
+            <RadioGroup
+                android:id="@+id/radioGenero"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal">
+                <RadioButton
+                    android:id="@+id/rbF"
+                    android:text="F"
+                    android:textColor="@color/colorBlanco"
+                    android:button="@drawable/bg_radio_genero"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginStart="30dp"/>
+                <RadioButton
+                    android:id="@+id/rbM"
+                    android:text="M"
+                    android:textColor="@color/colorBlanco"
+                    android:button="@drawable/bg_radio_genero"
+                    android:layout_marginEnd="30dp"/>
+                <RadioButton
+                    android:id="@+id/rbO"
+                    android:text="O"
+                    android:textColor="@color/colorBlanco"
+                    android:button="@drawable/bg_radio_genero"
+                    android:layout_marginEnd="30dp"
+                    />
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <!-- Botón Limpiar -->
+        <Button
+            android:id="@+id/btnLimpiar"
+            android:text="Limpiar campos   X"
+            android:textAllCaps="false"
+            android:fontFamily="@font/nunito_bold"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorRojoSaturado"
+            android:background="@android:color/transparent"
+            android:layout_gravity="start"
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="6dp"/>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/colorRojo"/>
+
+
+        <!-- Botones -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+
+            <Button
+                android:id="@+id/btnAgregarSocio"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Agregar Socio"
+                android:textSize="16sp"
+                android:textColor="@color/colorBlanco"
+                android:background="@drawable/btn_agregar_socio"
+                android:textAllCaps="false"
+                android:layout_marginBottom="10dp"/>
+
+            <Button
+                android:id="@+id/btnAgregarNoSocio"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Agregar No Socio"
+                android:textSize="16sp"
+                android:textColor="@color/colorBlanco"
+                android:textAllCaps="false"
+                android:background="@drawable/btn_registrar_no_socio"/>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_rectangulo" />
+    </LinearLayout>
+</ScrollView>
