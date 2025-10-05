@@ -5,14 +5,16 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class ListadoSociosVencidosActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        //btn-- navegacion
+
+        // Cargar el layout de la Activity
+        setContentView(R.layout.activity_listado_socios_vencidos)
+
+        // Botón Volver
         val btnVolver = findViewById<Button>(R.id.btnVolver)
         btnVolver.setOnClickListener {
             val intent = Intent(this, MenuActivity::class.java)

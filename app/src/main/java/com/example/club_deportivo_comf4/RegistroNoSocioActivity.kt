@@ -2,9 +2,11 @@ package com.example.club_deportivo_comf4
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -12,18 +14,26 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.util.Calendar
 
-class activity_registroSocio : AppCompatActivity() {
+class RegistroNoSocioActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_registro_socio)
+        setContentView(R.layout.activity_registro_no_socio)
 
         // Ajuste de padding para barras del sistema
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        // --- Botón atrás ---
+        val botonAtras = findViewById<ImageButton>(R.id.boton_flecha_atras)
+        botonAtras.setOnClickListener {
+            val intent = Intent(this, RegistrarActivity::class.java)
+            startActivity(intent)
+            finish() // opcional: cierra esta actividad para que no quede en el back stack
         }
 
         // --- EditText con calendario ---
@@ -45,39 +55,28 @@ class activity_registroSocio : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        // --- Botón Agregar Socio con alerta personalizada ---
-        val btnAgregarSocio = findViewById<Button>(R.id.btnAgregarSocio)
-        btnAgregarSocio.setOnClickListener {
-            val idGenerado = generarID() // reemplazá con la lógica real de registro
-            mostrarAlertaPersonalizada("Socio registrado con ID: $idGenerado")
+        // --- Botón para registrar No Socio ---
+        val btnRegistrarNoSocio = findViewById<Button>(R.id.btnAgregarNoSocio)
+        btnRegistrarNoSocio.setOnClickListener {
+            val idGenerado = generarID() // reemplazá con tu lógica real
+            mostrarAlertaPersonalizada("No Socio registrado con ID: $idGenerado")
         }
     }
 
     // Función para mostrar alerta personalizada con bordes redondeados
     private fun mostrarAlertaPersonalizada(mensaje: String) {
-        // Inflamos nuestro layout custom_alerta.xml
         val dialogView = layoutInflater.inflate(R.layout.custom_alerta, null)
-
-        // Referencias a los elementos del layout
         val tvMensaje = dialogView.findViewById<TextView>(R.id.tvMensaje)
         val btnAceptar = dialogView.findViewById<Button>(R.id.btnAceptar)
-
-        // Ponemos el mensaje dinámico
         tvMensaje.text = mensaje
 
-        // Creamos la alerta usando el layout personalizado
         val alertDialog = AlertDialog.Builder(this)
             .setView(dialogView)
             .create()
-
         alertDialog.setCancelable(false)
-
-        // Aplicamos el drawable con bordes redondeados al fondo de la ventana
         alertDialog.window?.setBackgroundDrawableResource(R.drawable.alerta)
-
         alertDialog.show()
 
-        // Listener del botón aceptar
         btnAceptar.setOnClickListener {
             alertDialog.dismiss()
         }

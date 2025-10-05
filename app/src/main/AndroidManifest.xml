@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.club_deportivo_comf4">
 
     <application
@@ -12,8 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Clubdeportivocomf4">
-
-        <!-- Login (pantalla inicial) -->
+        <activity
+            android:name=".CarnetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditarActivity"
+            android:exported="false" /> <!-- Login (pantalla inicial) -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -21,15 +24,34 @@
             android:theme="@style/Theme.Clubdeportivocomf4">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Menú principal -->
+        </activity> <!-- Menú principal -->
         <activity
             android:name=".MenuActivity"
+            android:exported="false" /> <!-- Pantallas de registro -->
+        <activity
+            android:name=".RegistrarActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".RegistroSocioActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegistroNoSocioActivity"
+            android:exported="false" /> <!-- Listados -->
+        <activity
+            android:name=".ListadosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListadoNoSociosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListaSociosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListadoSociosVencidosActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

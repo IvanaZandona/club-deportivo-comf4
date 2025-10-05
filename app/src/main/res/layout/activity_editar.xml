@@ -25,24 +25,26 @@
 
         <!-- Imagen de perfil -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginTop="2dp">
+            android:gravity="center"
+            android:orientation="horizontal">
+
             <ImageView
-                android:id="@+id/imgPerfil"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_perfil"
-                android:contentDescription="@string/usuario" />
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/avatar_circle"
+                android:scaleType="centerCrop"
+                android:src="@drawable/avatar_img" />
+
         </LinearLayout>
 
         <!-- Título -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Registrar Usuario"
+            android:text="Editar Usuario"
             android:textSize="28sp"
             android:fontFamily="@font/bebasneue_regular"
             android:textStyle="bold"
@@ -51,186 +53,163 @@
             android:layout_marginBottom="4dp"/>
 
         <!-- Contenedor de inputs -->
+
+        <!-- Botón Limpiar -->
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorFondo"
+            android:orientation="vertical"
             android:paddingStart="20dp"
-            android:paddingEnd="20dp"
             android:paddingTop="5dp"
-            android:paddingBottom="10dp"
-            android:background="@color/colorFondo">
+            android:paddingEnd="20dp"
+            android:paddingBottom="10dp">
 
             <!-- Nombre -->
             <TextView
                 android:id="@+id/tvNombre"
-                android:text="Nombre *"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorBlanco"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/nunito_semibold"
-                android:textSize="18sp"
-                android:layout_marginTop="16dp"/>
+                android:text="Nombre *"
+                android:textColor="@color/colorBlanco"
+                android:textSize="18sp" />
+
             <EditText
                 android:id="@+id/inputNombre"
-                android:hint="Ingresá el nombre"
-                android:textColorHint="@color/colorInput"
-                android:background="@drawable/bg_input_registrar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_registrar"
+                android:hint="Ingresá el nombre"
                 android:paddingStart="12dp"
-                android:paddingEnd="12dp"
                 android:paddingTop="8dp"
-                android:paddingBottom="8dp"/>
+                android:paddingEnd="12dp"
+                android:paddingBottom="8dp"
+                android:textColorHint="@color/colorInput" />
 
             <!-- Apellido -->
             <TextView
                 android:id="@+id/tvApellido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/nunito_semibold"
                 android:text="Apellido *"
                 android:textColor="@color/colorBlanco"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/nunito_semibold"
-                android:textSize="18sp"
-                android:layout_marginTop="16dp"/>
+                android:textSize="18sp" />
+
             <EditText
                 android:id="@+id/inputApellido"
-                android:hint="Ingresá el apellido"
-                android:textColor="#454141"
-                android:textColorHint="@color/colorInput"
-                android:background="@drawable/bg_input_registrar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_registrar"
+                android:hint="Ingresá el apellido"
                 android:paddingStart="12dp"
-                android:paddingEnd="12dp"
                 android:paddingTop="8dp"
-                android:paddingBottom="8dp"/>
+                android:paddingEnd="12dp"
+                android:paddingBottom="8dp"
+                android:textColor="#454141"
+                android:textColorHint="@color/colorInput" />
 
             <!-- DNI -->
             <TextView
                 android:id="@+id/tvDNI"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/nunito_semibold"
                 android:text="DNI *"
                 android:textColor="@color/colorBlanco"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/nunito_semibold"
-                android:textSize="18sp"
-                android:layout_marginTop="16dp"/>
+                android:textSize="18sp" />
+
             <EditText
                 android:id="@+id/inputDNI"
-                android:hint="Ingresá el DNI"
-                android:textColor="#454141"
-                android:textColorHint="@color/colorInput"
-                android:background="@drawable/bg_input_registrar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_registrar"
+                android:hint="Ingresá el DNI"
                 android:paddingStart="12dp"
-                android:paddingEnd="12dp"
                 android:paddingTop="8dp"
-                android:paddingBottom="8dp"/>
+                android:paddingEnd="12dp"
+                android:paddingBottom="8dp"
+                android:textColor="#454141"
+                android:textColorHint="@color/colorInput" />
 
             <!-- Fecha de nacimiento -->
             <TextView
                 android:id="@+id/tvFechaDeNacimiento"
-                android:text="Fecha de nacimiento *"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorBlanco"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/nunito_semibold"
-                android:textSize="18sp"
-                android:layout_marginTop="16dp"/>
+                android:text="Fecha de nacimiento *"
+                android:textColor="@color/colorBlanco"
+                android:textSize="18sp" />
+
             <EditText
                 android:id="@+id/inputFecha"
-                android:hint="Ingresá la fecha"
-                android:textColor="#454141"
-                android:textColorHint="@color/colorInput"
-                android:background="@drawable/bg_input_registrar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_registrar"
+                android:hint="Ingresá la fecha"
                 android:paddingStart="12dp"
-                android:paddingEnd="12dp"
                 android:paddingTop="8dp"
-                android:paddingBottom="8dp"/>
+                android:paddingEnd="12dp"
+                android:paddingBottom="8dp"
+                android:textColor="#454141"
+                android:textColorHint="@color/colorInput" />
 
             <!-- Teléfono -->
             <TextView
                 android:id="@+id/tvTelefono"
-                android:text="Teléfono *"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorBlanco"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/nunito_semibold"
-                android:textSize="18sp"
-                android:layout_marginTop="16dp"/>
+                android:text="Teléfono *"
+                android:textColor="@color/colorBlanco"
+                android:textSize="18sp" />
+
             <EditText
                 android:id="@+id/inputTelefono"
-                android:hint="Ingresá el teléfono"
-                android:textColor="#454141"
-                android:textColorHint="@color/colorInput"
-                android:background="@drawable/bg_input_registrar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_registrar"
+                android:hint="Ingresá el teléfono"
                 android:paddingStart="12dp"
-                android:paddingEnd="12dp"
                 android:paddingTop="8dp"
-                android:paddingBottom="8dp"/>
+                android:paddingEnd="12dp"
+                android:paddingBottom="8dp"
+                android:textColor="#454141"
+                android:textColorHint="@color/colorInput" />
 
             <!-- Correo -->
             <TextView
                 android:id="@+id/tvCorreo"
-                android:text="Correo *"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorBlanco"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/nunito_semibold"
-                android:textSize="18sp"
-                android:layout_marginTop="16dp"/>
+                android:text="Correo *"
+                android:textColor="@color/colorBlanco"
+                android:textSize="18sp" />
+
             <EditText
                 android:id="@+id/inputCorreo"
-                android:hint="Ingresá el correo"
-                android:textColor="#454141"
-                android:textColorHint="@color/colorInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@drawable/bg_input_registrar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:hint="Ingresá el correo"
                 android:paddingStart="12dp"
-                android:paddingEnd="12dp"
                 android:paddingTop="8dp"
-                android:paddingBottom="8dp"/>
-
-            <!-- Género -->
-            <RadioGroup
-                android:id="@+id/radioGenero"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center_horizontal">
-                <RadioButton
-                    android:id="@+id/rbF"
-                    android:text="F"
-                    android:textColor="@color/colorBlanco"
-                    android:button="@drawable/bg_radio_genero"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginStart="30dp"/>
-                <RadioButton
-                    android:id="@+id/rbM"
-                    android:text="M"
-                    android:textColor="@color/colorBlanco"
-                    android:button="@drawable/bg_radio_genero"
-                    android:layout_marginEnd="30dp"/>
-                <RadioButton
-                    android:id="@+id/rbO"
-                    android:text="O"
-                    android:textColor="@color/colorBlanco"
-                    android:button="@drawable/bg_radio_genero"
-                    android:layout_marginEnd="30dp"
-                    />
-            </RadioGroup>
+                android:paddingEnd="12dp"
+                android:paddingBottom="8dp"
+                android:textColor="#454141"
+                android:textColorHint="@color/colorInput" />
 
         </LinearLayout>
 
-        <!-- Botón Limpiar -->
         <Button
             android:id="@+id/btnLimpiar"
             android:text="Limpiar campos   X"
@@ -250,7 +229,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/colorRojo"/>
+            />
 
 
         <!-- Botones -->
@@ -262,25 +241,15 @@
 
 
             <Button
-                android:id="@+id/btnAgregarSocio"
+                android:id="@+id/btnGuardarEdicion"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="Agregar Socio"
+                android:text="Guardar"
                 android:textSize="16sp"
                 android:textColor="@color/colorBlanco"
                 android:background="@drawable/btn_agregar_socio"
                 android:textAllCaps="false"
                 android:layout_marginBottom="10dp"/>
-
-            <Button
-                android:id="@+id/btnAgregarNoSocio"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="Agregar No Socio"
-                android:textSize="16sp"
-                android:textColor="@color/colorBlanco"
-                android:textAllCaps="false"
-                android:background="@drawable/btn_registrar_no_socio"/>
         </LinearLayout>
 
         <ImageView
