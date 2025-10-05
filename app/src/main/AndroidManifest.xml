@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.club_deportivo_comf4">
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.club_deportivo_comf4" >
 
@@ -12,6 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Clubdeportivocomf4">
+        <activity
+            android:name=".CarnetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditarActivity"
+            android:exported="false" /> <!-- Login (pantalla inicial) -->
 
         <!-- Login (pantalla inicial) -->
 
@@ -43,6 +50,27 @@
         </activity> <!-- Menú principal -->
         <activity
             android:name=".MenuActivity"
+            android:exported="false" /> <!-- Pantallas de registro -->
+        <activity
+            android:name=".RegistrarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegistroSocioActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegistroNoSocioActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListadosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListadoNoSociosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListaSociosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListadoSociosVencidosActivity"
             android:exported="false" />
 
 

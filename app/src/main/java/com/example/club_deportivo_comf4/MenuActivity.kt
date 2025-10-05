@@ -1,12 +1,8 @@
 package com.example.club_deportivo_comf4
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import android.content.Intent
-import android.widget.Button
 import android.widget.TextView
 import android.widget.FrameLayout
 
@@ -28,9 +24,14 @@ class MenuActivity : AppCompatActivity() {
         btnBuscar.setOnClickListener {
             // acción del botón
         }*/
-        val btnRegistrarSocio = findViewById<FrameLayout>(R.id.btnRegistrar) // o Button, según tu XML
+        val btnRegistrarSocio = findViewById<FrameLayout>(R.id.btnRegistrar) //
         btnRegistrarSocio.setOnClickListener {
-            val intent = Intent(this, activity_registrar::class.java)
+            val intent = Intent(this, RegistrarActivity::class.java)
+            startActivity(intent)
+        }
+        val btnListados = findViewById<FrameLayout>(R.id.btnListados) //
+        btnListados.setOnClickListener {
+            val intent = Intent(this, ListadosActivity::class.java)
             startActivity(intent)
         }
 

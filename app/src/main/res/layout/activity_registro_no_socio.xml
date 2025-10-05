@@ -8,10 +8,10 @@
     android:fillViewport="true">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <!-- Botón atrás -->
         <ImageButton
@@ -33,7 +33,6 @@
             android:gravity="center_horizontal"
             android:layout_marginTop="50dp">
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,19 +44,17 @@
                 android:layout_marginBottom="8dp" />
         </LinearLayout>
 
-        <!-- Contenedor de inputs  -->
+        <!-- Contenedor de inputs -->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:paddingStart="30dp"
             android:paddingEnd="20dp"
             android:paddingTop="20dp"
             android:paddingBottom="6dp"
             android:layout_marginTop="30dp"
             android:background="@color/colorFondo">
-
 
             <TextView
                 android:id="@+id/tvFechaInscripcion"
@@ -81,10 +78,12 @@
                 android:layout_marginTop="6dp"
                 android:focusable="false"
                 android:clickable="true" />
-
-
-
         </LinearLayout>
+        <!-- Espaciador para empujar botones al fondo -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <!-- Botón Limpiar -->
         <Button
@@ -101,14 +100,6 @@
             android:layout_marginTop="12dp"
             android:layout_marginStart="10dp"/>
 
-        <!-- Contenedor inferior  -->
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:gravity="center_horizontal"
-            android:paddingBottom="16dp">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -142,10 +133,12 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="42dp"
                 android:layout_marginTop="16dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/bg_rectangulo"
-                android:scaleType="fitXY" />
-        </LinearLayout>
+                android:layout_gravity="bottom"/>
+
+
     </LinearLayout>
 </ScrollView>

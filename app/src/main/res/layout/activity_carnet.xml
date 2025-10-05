@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:orientation="vertical"
+    android:background="#121212"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+
+    <ImageButton
+        android:id="@+id/boton_flecha_atras"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="start"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
+        android:importantForAccessibility="no"
+        android:src="@drawable/boton_flecha_atras"/>
+
+
+    <!-- título -->
+    <LinearLayout
+        android:id="@+id/contenedor_titulo_perfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/bebasneue_regular"
+            android:text="CARNET"
+            android:textColor="@color/colorBlanco"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+
+    <!-- Contenedor 1 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        android:paddingStart="30dp"
+        android:paddingEnd="20dp">
+
+
+        <LinearLayout
+            android:layout_width="302dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/marco_borde_negro_fondo_blanco"
+            android:gravity="center"
+            android:padding="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <!-- Título -->
+                <TextView
+                    android:id="@+id/txtClub"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bebasneue_regular"
+                    android:gravity="center"
+                    android:text="CLUB_DEPORTIVO"
+                    android:textColor="#B00020"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+
+                <!-- Imagen superior izquierda -->
+                <ImageView
+                    android:id="@+id/imgSuperiorIzquierda"
+                    android:layout_width="108dp"
+                    android:layout_height="99dp"
+                    android:layout_below="@id/txtClub"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="8dp"
+                    android:importantForAccessibility="no"
+                    android:background="@color/colorGris"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_perfil" />
+
+
+
+
+                <!-- Bloque de datos a la derecha de la imagen superior -->
+
+
+                <!-- Zona inferior izquierda: logo + bloque DNI (abajo de la imagen superior izquierda) -->
+
+
+                <LinearLayout
+                    android:id="@+id/layoutDatos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/imgSuperiorIzquierda"
+                    android:layout_marginStart="49dp"
+                    android:layout_marginTop="-1dp"
+                    android:layout_toEndOf="@id/imgSuperiorIzquierda"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="146dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="17dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="66dp"
+                            android:layout_height="match_parent"
+                            android:text="Nombre" />
+
+
+                        <TextView
+                            android:layout_width="24dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="ID" />
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="146dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="17dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="66dp"
+                            android:layout_height="match_parent"
+                            android:text="ROCIO"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:layout_width="24dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="234"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="146dp"
+                        android:layout_height="33dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="17dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:text="Apellido" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="146dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="17dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="CEJAS"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="146dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="17dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:text="Fecha de nacimiento" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="146dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="17dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="20/06/1995"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/layoutInferiorIzquierda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imgSuperiorIzquierda"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@id/layoutDatos"
+                    android:orientation="horizontal">
+
+
+                    <!-- Imagen inferior izquierda (logo) -->
+
+
+                    <!-- Bloque DNI -->
+                    <LinearLayout
+                        android:id="@+id/layoutDNI"
+                        android:layout_width="123dp"
+                        android:layout_height="110dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:id="@+id/tvDniLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="DNI"
+                            android:textColor="@color/colorGris"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/tvDniNumero"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="35.804.759"
+                            android:textColor="#000000"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+
+                        <ImageView
+                            android:id="@+id/imgInferiorIzquierda"
+                            android:layout_width="80dp"
+                            android:layout_height="75dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="12dp"
+                            android:scaleType="fitCenter"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/logo_comf4" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+                <!-- Imagen inferior derecha (QR u otra) -->
+                <ImageView
+                    android:id="@+id/imgInferiorDerecha"
+                    android:layout_width="78dp"
+                    android:layout_height="74dp"
+                    android:layout_below="@id/layoutDatos"
+                    android:layout_alignParentEnd="true"
+                    android:importantForAccessibility="no"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginEnd="2dp"
+                    android:background="@color/colorGris"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_perfil" />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <!-- ESPACIADOR para empujar el contenido inferior -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+
+        <Button
+            android:id="@+id/imprimirCarnet"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:fontFamily="@font/nunito_bold"
+            android:textSize="20sp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_boton_cuadro"
+            android:text="Imprimir carnet"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBlanco"
+            />
+
+
+        <Button
+            android:id="@+id/volverAtras"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_boton_cuadro"
+            android:fontFamily="@font/nunito_bold"
+            android:text="@string/volver"
+            android:textSize="20sp"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBlanco" />
+
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="120dp"
+        android:importantForAccessibility="no"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_rectangulo" />
+
+
+</LinearLayout>
+
+
+
