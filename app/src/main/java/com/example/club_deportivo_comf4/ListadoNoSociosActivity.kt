@@ -18,5 +18,14 @@ class ListadoNoSociosActivity : AppCompatActivity() {
             val intent = Intent(this, MenuActivity::class.java)
             startActivity(intent)
         }
+        // Botón Pagos
+        val btnPagos = findViewById<Button>(R.id.btnPagos)
+        btnPagos.setOnClickListener {
+            val intent = Intent(this, PagosActivity::class.java)
+            startActivity(intent)
+        }
+
+
+
     }
 }

@@ -43,5 +43,14 @@ class MenuActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val btnBuscarSocio = findViewById<FrameLayout>(R.id.btnBuscarSocio)
+        btnBuscarSocio.setOnClickListener {
+            val intent = Intent(this, BuscarPersonaActivity2::class.java)
+            startActivity(intent)
+        }
+
+
     }
 }
+
+
