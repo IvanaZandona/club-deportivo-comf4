@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorFondo"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:id="@+id/main"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal">
+
+        <!-- Icono volver -->
+        <ImageView
+            android:id="@+id/iconoVolver"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="start"
+            android:src="@drawable/ic_volver2"
+            android:contentDescription="@string/volver"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:tint="@color/colorRojo" />
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="pagarCuotaMensual"
+            android:textColor="@color/colorBlanco"
+            android:textSize="28sp"
+            android:fontFamily="@font/bebasneue_regular"
+            android:gravity="center" />
+
+        <!-- Contenedor del formulario -->
+        <LinearLayout
+            android:id="@+id/layoutFormulario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:paddingHorizontal="24dp">
+
+            <!-- Campo DNI -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ingresarDNI"
+                android:textColor="@color/colorBlanco"
+                android:fontFamily="@font/nunito_semibold"
+                android:textSize="18sp"
+                android:layout_marginBottom="4dp" />
+
+            <EditText
+                android:id="@+id/inputDNI"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_edittext2"
+                android:hint="Ej: 12345678"
+                android:padding="10dp"
+                android:inputType="number"
+                android:textColor="@color/colorGrisOscuro"
+                android:textColorHint="@color/colorGrisOscuro"
+                android:fontFamily="@font/nunito_semibold"
+                android:layout_marginBottom="16dp"
+                android:drawableEnd="@drawable/ic_buscar"
+                app:drawableTint="@color/colorGrisOscuro"
+                android:drawablePadding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                />
+
+            <!-- Campo Monto -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ingresarMonto"
+                android:textColor="@color/colorBlanco"
+                android:fontFamily="@font/nunito_regular"
+                android:textSize="18sp"
+                android:layout_marginBottom="4dp" />
+
+            <EditText
+                android:id="@+id/inputMonto"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_edittext2"
+                android:hint="Ej: 12500"
+                android:padding="10dp"
+                android:inputType="numberDecimal"
+                android:textColor="@color/colorGrisOscuro"
+                android:textColorHint="@color/colorGrisOscuro"
+                android:fontFamily="@font/nunito_regular"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Contenedor método de pago -->
+            <LinearLayout
+                android:id="@+id/contenedorMetodoPago"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_boton_cuadro"
+                android:padding="16dp"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/metodoPago"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/nunito_bold"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Radio buttons con texto a la izquierda y circulo a la derecha -->
+                <RadioGroup
+                    android:id="@+id/radioGroupMetodo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="start">
+
+                    <RadioButton
+                        android:id="@+id/rbEfectivo"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="@string/efectivo"
+                        android:textColor="@color/colorBlanco"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:textSize="20sp"
+                        android:button="@null"
+                        android:drawableEnd="@drawable/bg_radio_button"
+                        android:gravity="center_vertical|start"
+                        android:paddingStart="90dp"
+                        android:paddingEnd="90dp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <RadioButton
+                        android:id="@+id/rbTarjeta"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="@string/tarjeta"
+                        android:textColor="@color/colorBlanco"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:textSize="20sp"
+                        android:button="@null"
+                        android:drawableEnd="@drawable/bg_radio_button"
+                        android:gravity="center_vertical|start"
+                        android:paddingStart="90dp"
+                        android:paddingEnd="90dp"
+                        android:layout_marginBottom="8dp"/>
+                </RadioGroup>
+
+                <!-- Selector de cuotas -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cuotas"
+                        android:textColor="@color/colorBlanco"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/nunito_regular"
+                        android:layout_marginEnd="28dp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerCuotas"
+                        android:layout_width="90dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_edittext2"
+                        android:enabled="false"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Botón PAGAR -->
+        <LinearLayout
+            android:id="@+id/btnPagar"
+            android:layout_width="160dp"
+            android:layout_height="48dp"
+            android:minHeight="50dp"
+            android:minWidth="50dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_boton_cuadro"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pagar"
+                android:textColor="@color/colorBlanco"
+                android:textSize="18sp"
+                android:fontFamily="@font/nunito_bold" />
+        </LinearLayout>
+
+        <!-- Botón VOLVER -->
+        <LinearLayout
+            android:id="@+id/btnVolver"
+            android:layout_width="160dp"
+            android:layout_height="48dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_boton_cuadro_oscuro"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Volver"
+                android:textColor="@color/colorBlanco"
+                android:textSize="18sp"
+                android:fontFamily="@font/nunito_bold" />
+        </LinearLayout>
+
+        <!-- Espaciador -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Fondo inferior -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="12dp"
+            android:layout_gravity="bottom"
+            android:src="@drawable/bg_rectangulo"
+            android:scaleType="fitXY" />
+
+    </LinearLayout>
+</ScrollView>
+

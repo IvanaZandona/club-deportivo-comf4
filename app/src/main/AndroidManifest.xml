@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.club_deportivo_comf4">
 
     <application
@@ -12,11 +13,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Clubdeportivocomf4">
         <activity
+            android:name=".BuscarPersonaActivity2"
+            android:exported="false" />
+        <activity
             android:name=".CarnetActivity"
             android:exported="false" />
         <activity
             android:name=".EditarActivity"
             android:exported="false" /> <!-- Login (pantalla inicial) -->
+        <!-- Login (pantalla inicial) -->
+        <activity
+            android:name=".ListadoNoSociosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListaSociosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListadoSociosVencidosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListadosActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -30,7 +47,7 @@
         </activity> <!-- Menú principal -->
         <activity
             android:name=".MenuActivity"
-            android:exported="false" /> <!-- Pantallas de registro -->
+            android:exported="false" />
         <activity
             android:name=".RegistrarActivity"
             android:exported="false" />
@@ -39,18 +56,15 @@
             android:exported="false" />
         <activity
             android:name=".RegistroNoSocioActivity"
-            android:exported="false" /> <!-- Listados -->
+            android:exported="false" /> <!-- Menú pagos -->
         <activity
-            android:name=".ListadosActivity"
-            android:exported="false" />
+            android:name=".PagosActivity"
+            android:exported="false" /> <!-- Pago mensual -->
         <activity
-            android:name=".ListadoNoSociosActivity"
-            android:exported="false" />
+            android:name=".ComprobantePagoMensualActivity"
+            android:exported="false" /> <!-- Comprobante Pago mensual -->
         <activity
-            android:name=".ListaSociosActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ListadoSociosVencidosActivity"
+            android:name=".PagoMensualActivity"
             android:exported="false" />
     </application>
 

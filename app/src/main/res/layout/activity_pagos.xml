@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorFondo">
+
+    <!-- Ícono volver (superior izquierda) -->
+    <ImageView
+        android:id="@+id/iconoVolver"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_volver2"
+        android:contentDescription="@string/volver"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:tint="@color/colorRojo" />
+
+    <!-- Título PAGOS -->
+    <TextView
+        android:id="@+id/tituloPagos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pagos"
+        android:textColor="@color/colorBlanco"
+        android:textSize="34sp"
+        android:fontFamily="@font/bebasneue_regular"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="40dp"/>
+
+    <!-- Contenedor principal centrado -->
+    <LinearLayout
+        android:id="@+id/layoutBotones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/tituloPagos"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp">
+
+        <!-- BOTÓN PAGO MENSUAL -->
+        <LinearLayout
+            android:id="@+id/btnPagoMensual"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_boton_cuadro"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_marginBottom="32dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bebasneue_regular"
+                android:gravity="center"
+                android:text="@string/pagoMensual"
+                android:textColor="@color/colorBlanco"
+                android:textSize="28sp" />
+        </LinearLayout>
+
+        <!-- BOTÓN PAGO DIARIO -->
+        <LinearLayout
+            android:id="@+id/btnPagoDiario"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_boton_cuadro"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pagoDiario"
+                android:gravity="center"
+                android:textColor="@color/colorBlanco"
+                android:textSize="28sp"
+                android:fontFamily="@font/bebasneue_regular" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- BOTÓN RECTANGULAR VOLVER -->
+    <LinearLayout
+        android:id="@+id/btnVolver"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_above="@id/bgInferior"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:background="@drawable/bg_boton_cuadro"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Volver"
+            android:gravity="center"
+            android:textColor="@color/colorBlanco"
+            android:textSize="18sp"
+            android:fontFamily="@font/nunito_bold" />
+    </LinearLayout>
+
+    <!-- Fondo inferior -->
+    <View
+        android:id="@+id/bgInferior"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_rectangulo" />
+
+</RelativeLayout>
+
