@@ -30,7 +30,7 @@
                 android:text="@string/socios_vencidos"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
-                android:textSize="42sp"
+                android:textSize="32sp"
                 android:textStyle="bold" />
 
         </LinearLayout>

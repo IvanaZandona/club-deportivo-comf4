@@ -13,8 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.util.Calendar
+import android.widget.Toast
 
 class RegistroNoSocioActivity : AppCompatActivity() {
+
+    private var noSocioRegistrado = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +31,16 @@ class RegistroNoSocioActivity : AppCompatActivity() {
             insets
         }
 
-        // --- Botón atrás ---
+        //inputs
         val botonAtras = findViewById<ImageButton>(R.id.boton_flecha_atras)
+        val inputFecha = findViewById<EditText>(R.id.inputFecha)
+        val btnAgregarNoSocio = findViewById<Button>(R.id.btnAgregarNoSocio)
+        val btnPagos = findViewById<Button>(R.id.btnIrAPagos)
+        val btnLimpiar = findViewById<Button>(R.id.btnLimpiar)
+
+        btnPagos.isEnabled = false // deshabilitado hasta registrar
+
+        // --- Botón atrás ---
         botonAtras.setOnClickListener {
             val intent = Intent(this, RegistrarActivity::class.java)
             startActivity(intent)
@@ -37,7 +48,6 @@ class RegistroNoSocioActivity : AppCompatActivity() {
         }
 
         // --- EditText con calendario ---
-        val inputFecha = findViewById<EditText>(R.id.inputFecha)
         inputFecha.setOnClickListener {
             val calendario = Calendar.getInstance()
             val año = calendario.get(Calendar.YEAR)
@@ -55,12 +65,55 @@ class RegistroNoSocioActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        // --- Botón para registrar No Socio ---
-        val btnRegistrarNoSocio = findViewById<Button>(R.id.btnAgregarNoSocio)
-        btnRegistrarNoSocio.setOnClickListener {
-            val idGenerado = generarID() // reemplazá con tu lógica real
-            mostrarAlertaPersonalizada("No Socio registrado con ID: $idGenerado")
+        // --- Obtener ID del usuario ---
+        val db = DBHelper(this)
+        val idUsuario = intent.getLongExtra("id_usuario", -1)
+
+        if (idUsuario == -1L) {
+            Toast.makeText(this, "Error: no se encontró el usuario", Toast.LENGTH_SHORT).show()
+            finish()
+            return
         }
+
+        // --- Botón registrar No Socio ---
+        btnAgregarNoSocio.setOnClickListener {
+            val fecha = inputFecha.text.toString().trim()
+
+            if (fecha.isEmpty()) {
+                Toast.makeText(this, "Ingresá la fecha", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val idNoSocio = db.insertarNoSocio(idUsuario, fecha)
+
+            if (idNoSocio > 0) {
+                mostrarAlertaPersonalizada("No Socio registrado correctamente (ID: $idNoSocio)")
+                noSocioRegistrado = true
+                btnAgregarNoSocio.isEnabled = false
+                btnPagos.isEnabled = true
+            } else {
+                Toast.makeText(this, "Error al registrar no socio", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
+        // --- botón limpiar ---
+        btnLimpiar.setOnClickListener {
+            inputFecha.setText("")
+        }
+
+        // --- botón ir a pago diario ---
+        btnPagos.setOnClickListener {
+            if (!noSocioRegistrado) {
+                Toast.makeText(this, "Primero registrá al no socio", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val intent = Intent(this, PagoDiarioActivity::class.java)
+            intent.putExtra("id_usuario", idUsuario)
+            startActivity(intent)
+        }
+
     }
 
     // Función para mostrar alerta personalizada con bordes redondeados
@@ -82,8 +135,4 @@ class RegistroNoSocioActivity : AppCompatActivity() {
         }
     }
 
-    // Función para generar ID aleatorio
-    private fun generarID(): Int {
-        return (1000..9999).random()
-    }
 }

@@ -13,8 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.util.Calendar
-
+import android.widget.Toast
+import android.widget.RadioGroup
 class RegistroSocioActivity : AppCompatActivity() {
+
+    private var socioRegistrado = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,16 +31,26 @@ class RegistroSocioActivity : AppCompatActivity() {
             insets
         }
 
+        //inputs
+        val inputFecha = findViewById<EditText>(R.id.inputFecha)
+        val radioApto = findViewById<RadioGroup>(R.id.radioAptoFisico)
+        val radioFicha = findViewById<RadioGroup>(R.id.radioFichaMedica)
+        val btnAgregarSocio = findViewById<Button>(R.id.btnAgregarSocio)
+        val btnPagos = findViewById<Button>(R.id.btnAgregarNoSocio)
+        val btnLimpiar = findViewById<Button>(R.id.btnLimpiar)
+        val btnAtras = findViewById<ImageButton>(R.id.boton_flecha_atras)
+
+        // deshabilitar el botón “Ir a pagos” hasta guardar socio
+        btnPagos.isEnabled = false
+
         // --- Botón atrás ---
-        val botonAtras = findViewById<ImageButton>(R.id.boton_flecha_atras)
-        botonAtras.setOnClickListener {
+        btnAtras.setOnClickListener {
             val intent = Intent(this, RegistrarActivity::class.java)
             startActivity(intent)
             finish() // opcional: cierra esta actividad
         }
 
         // --- EditText con calendario ---
-        val inputFecha = findViewById<EditText>(R.id.inputFecha)
         inputFecha.setOnClickListener {
             val calendario = Calendar.getInstance()
             val año = calendario.get(Calendar.YEAR)
@@ -55,12 +68,67 @@ class RegistroSocioActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        // --- Botón Agregar Socio con alerta personalizada ---
-        val btnAgregarSocio = findViewById<Button>(R.id.btnAgregarSocio)
-        btnAgregarSocio.setOnClickListener {
-            val idGenerado = generarID() // reemplazá con la lógica real de registro
-            mostrarAlertaPersonalizada("Socio registrado con ID: $idGenerado")
+        // Instancia de base de datos y obtención de id del usuario
+        // ------------------------------------------------------------
+        val db = DBHelper(this)
+        val idUsuario = intent.getLongExtra("id_usuario", -1)
+
+        if (idUsuario == -1L) {
+            Toast.makeText(this, "Error: no se encontró el usuario", Toast.LENGTH_SHORT).show()
+            finish()
+            return
         }
+
+        // --- Botón Agregar Socio con alerta personalizada ---
+
+        btnAgregarSocio.setOnClickListener {
+            val fechaInscripcion = inputFecha.text.toString().trim()
+            val aptoSeleccionado = radioApto.checkedRadioButtonId
+            val fichaSeleccionada = radioFicha.checkedRadioButtonId
+
+            if (fechaInscripcion.isEmpty() || aptoSeleccionado == -1 || fichaSeleccionada == -1) {
+                Toast.makeText(this, "Completá todos los campos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val aptoInt = if (aptoSeleccionado == R.id.rbAptoSi) 1 else 0
+            val fichaInt = if (fichaSeleccionada == R.id.rbFichaSi) 1 else 0
+
+            val idSocio = db.insertarSocio(idUsuario, fechaInscripcion, aptoInt, fichaInt)
+
+            if (idSocio > 0) {
+                mostrarAlertaPersonalizada("Socio registrado correctamente (ID: $idSocio)")
+                socioRegistrado = true
+                // deshabilitar el botón guardar para evitar duplicados
+                btnAgregarSocio.isEnabled = false
+                // habilitar el botón ir a pagos
+                btnPagos.isEnabled = true
+            } else {
+                Toast.makeText(this, "Error al registrar socio", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
+        // botón limpiar campos
+        btnLimpiar.setOnClickListener {
+            inputFecha.setText("")
+            radioApto.clearCheck()
+            radioFicha.clearCheck()
+        }
+
+        // botón ir a pagos
+        btnPagos.setOnClickListener {
+            if (!socioRegistrado) {
+                Toast.makeText(this, "Primero registrá al socio", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // esta activity siempre es para socios, vamos directo al pago mensual
+            val intent = Intent(this, PagoMensualActivity::class.java)
+            intent.putExtra("id_usuario", idUsuario)  // usamos el mismo usuario_id
+            startActivity(intent)
+        }
+
     }
 
     // Función para mostrar alerta personalizada con bordes redondeados
@@ -82,8 +150,5 @@ class RegistroSocioActivity : AppCompatActivity() {
         }
     }
 
-    // Función para generar ID aleatorio
-    private fun generarID(): Int {
-        return (1000..9999).random()
-    }
 }
+

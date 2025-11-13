@@ -17,6 +17,13 @@ class PagosActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // Boton Pago Diario
+        val btnPagoDiario = findViewById<LinearLayout>(R.id.btnPagoDiario)
+        btnPagoDiario.setOnClickListener {
+            val intent = Intent(this, PagoDiarioActivity::class.java)
+            startActivity(intent)
+        }
+
         // Boton "Volver" (el rectangular de abajo)
         val btnVolver = findViewById<LinearLayout>(R.id.btnVolver)
         btnVolver.setOnClickListener {
