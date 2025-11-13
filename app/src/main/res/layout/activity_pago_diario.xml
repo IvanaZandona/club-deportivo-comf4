@@ -31,14 +31,14 @@
         <!-- Título -->
         <TextView
             android:id="@+id/txtTitulo"
-            android:layout_width="wrap_content"
+            android:layout_width="247dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:text="@string/pagarCuotaMensual"
-            android:textColor="@color/colorBlanco"
-            android:textSize="28sp"
             android:fontFamily="@font/bebasneue_regular"
-            android:gravity="center" />
+            android:gravity="center"
+            android:text="@string/pagoDiario"
+            android:textColor="@color/colorBlanco"
+            android:textSize="28sp" />
 
         <!-- Contenedor del formulario -->
         <LinearLayout
@@ -80,6 +80,24 @@
                 android:focusable="true"
                 />
 
+            <!-- Campo Actividad -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/seleccionarActividad"
+                android:textColor="@color/colorBlanco"
+                android:fontFamily="@font/nunito_regular"
+                android:textSize="18sp"
+                android:layout_marginBottom="4dp" />
+
+            <Spinner
+                android:id="@+id/spinnerActividad"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_edittext2"
+                android:padding="10dp"
+                android:layout_marginBottom="24dp" />
+
             <!-- Campo Monto -->
             <TextView
                 android:layout_width="match_parent"
@@ -103,7 +121,7 @@
                 android:fontFamily="@font/nunito_regular"
                 android:layout_marginBottom="24dp" />
 
-            <!-- Contenedor método de pago -->
+            <!-- Contenedor metodo de pago -->
             <LinearLayout
                 android:id="@+id/contenedorMetodoPago"
                 android:layout_width="match_parent"
@@ -253,4 +271,3 @@
 
     </LinearLayout>
 </ScrollView>
-

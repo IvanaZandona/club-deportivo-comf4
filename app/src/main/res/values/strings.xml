@@ -51,5 +51,7 @@
     <string name="ultimo_vencimiento">Último vencimiento</string>"
     <string name="ir_a_pagos">Ir a pagos</string>
 
+    <string name="seleccionarActividad">Seleccionar actividad</string>
+    <string name="actividad">Actividad</string>
 
 </resources>

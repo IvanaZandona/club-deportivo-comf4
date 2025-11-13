@@ -67,7 +67,7 @@
             android:background="@null"
             android:hint="Ingresá el DNI sin puntos"
             android:inputType="number"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/colorGrisOscuro"
             android:textColorHint="#AAAAAA" />
 
 
