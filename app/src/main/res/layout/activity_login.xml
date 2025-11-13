@@ -38,7 +38,7 @@
 
         <!-- Usuario -->
         <EditText
-            android:id="@+id/edtUsuario"
+            android:id="@+id/usuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/usuario"
@@ -54,7 +54,7 @@
 
         <!-- Contraseña -->
         <EditText
-            android:id="@+id/edtContrasena"
+            android:id="@+id/contrasena"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/contrasena"

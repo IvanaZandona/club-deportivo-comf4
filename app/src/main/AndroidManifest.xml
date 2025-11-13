@@ -13,6 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Clubdeportivocomf4">
         <activity
+            android:name=".ComprobantePagoDiarioActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PagoDiarioActivity"
+            android:exported="false" />
+        <activity
             android:name=".BuscarPersonaActivity2"
             android:exported="false" />
         <activity
