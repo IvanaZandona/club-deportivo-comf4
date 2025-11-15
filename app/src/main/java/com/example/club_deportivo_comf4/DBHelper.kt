@@ -4,10 +4,10 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import java.util.Calendar
 
-class DBHelper(private val context: Context) :
-    SQLiteOpenHelper(context, "ClubDeportivo.db", null, 7) { // Versión incrementada a 7
+class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 15) {
 
     override fun onConfigure(db: SQLiteDatabase) {
         super.onConfigure(db)
@@ -15,127 +15,75 @@ class DBHelper(private val context: Context) :
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        android.util.Log.d("DBHelper", "BASE DE DATOS CREADA")
-        db.execSQL(
-            "CREATE TABLE administradores (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "usuario TEXT UNIQUE NOT NULL," +
-                    "password TEXT NOT NULL)"
-        )
+        Log.d("DBHelper", "onCreate: Creando estructura de tablas desde cero.")
 
-        db.execSQL(
-            "CREATE TABLE usuarios (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "nombre TEXT," +
-                    "apellido TEXT," +
-                    "dni TEXT UNIQUE NOT NULL," +
-                    "fecha_nacimiento TEXT," +
-                    "telefono TEXT," +
-                    "email TEXT," +
-                    "tipo_usuario INTEGER CHECK(tipo_usuario IN (1, 2)))"
-        )
-
-        db.execSQL(
-            "CREATE TABLE socios (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "usuario_id INTEGER," +
-                    "fecha_alta TEXT," +
-                    "apto_fisico INTEGER," +
-                    "ficha_medica INTEGER," +
-                    "FOREIGN KEY(usuario_id) REFERENCES usuarios(id))"
-        )
-
-        db.execSQL(
-            "CREATE TABLE no_socios (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "usuario_id INTEGER," +
-                    "fecha_registro TEXT," +
-                    "FOREIGN KEY(usuario_id) REFERENCES usuarios(id))"
-        )
-
-        db.execSQL(
-            "CREATE TABLE pagos (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "usuario_id INTEGER," +
-                    "tipo_pago TEXT," +
-                    "monto_total REAL," +
-                    "metodo_pago TEXT," +
-                    "cuotas INTEGER," +
-                    "fecha_pago TEXT," +
-                    "estado_pago INTEGER CHECK(estado_pago IN (0, 1))," +
-                    "FOREIGN KEY(usuario_id) REFERENCES usuarios(id))"
-        )
-
-        db.execSQL(
-            "CREATE TABLE pagos_socios (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "pago_id INTEGER," +
-                    "usuario_id INTEGER," +
-                    "mes INTEGER," +
-                    "anio INTEGER," +
-                    "FOREIGN KEY(pago_id) REFERENCES pagos(id))"
-        )
-
-        db.execSQL(
-            "CREATE TABLE pagos_no_socios (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "pago_id INTEGER," +
-                    "fecha_dia TEXT," +
-                    "actividad_id INTEGER," +
-                    "FOREIGN KEY(pago_id) REFERENCES pagos(id)," +
-                    "FOREIGN KEY(actividad_id) REFERENCES actividades(id))"
-        )
-
-        db.execSQL(
-            "CREATE TABLE actividades (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "nombre TEXT UNIQUE NOT NULL," +
-                    "descripcion TEXT)"
-        )
-
-        db.execSQL(
-            "INSERT INTO actividades (nombre, descripcion) VALUES " +
-                    "('Natación', 'Piscina libre'), " +
-                    "('Gimnasia', 'Clase de funcional'), " +
-                    "('Hockey', 'Entrenamiento femenino')"
-        )
+        db.execSQL("CREATE TABLE administradores (id INTEGER PRIMARY KEY, usuario TEXT UNIQUE NOT NULL, password TEXT NOT NULL)")
+        db.execSQL("CREATE TABLE usuarios (id INTEGER PRIMARY KEY, nombre TEXT, apellido TEXT, dni TEXT UNIQUE NOT NULL, fecha_nacimiento TEXT, telefono TEXT, email TEXT, tipo_usuario INTEGER)")
+        db.execSQL("CREATE TABLE actividades (id INTEGER PRIMARY KEY, nombre TEXT UNIQUE NOT NULL, descripcion TEXT)")
+        db.execSQL("CREATE TABLE socios (id INTEGER PRIMARY KEY, usuario_id INTEGER, fecha_alta TEXT, fecha_ultimo_pago TEXT, apto_fisico INTEGER, ficha_medica INTEGER, FOREIGN KEY(usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE)")
+        db.execSQL("CREATE TABLE no_socios (id INTEGER PRIMARY KEY, usuario_id INTEGER, fecha_registro TEXT, FOREIGN KEY(usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE)")
+        db.execSQL("CREATE TABLE pagos (id INTEGER PRIMARY KEY, usuario_id INTEGER, tipo_pago TEXT, monto_total REAL, metodo_pago TEXT, cuotas INTEGER, fecha_pago TEXT, estado_pago INTEGER, FOREIGN KEY(usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE)")
+        db.execSQL("CREATE TABLE pagos_socios (id INTEGER PRIMARY KEY, pago_id INTEGER, mes INTEGER, anio INTEGER, FOREIGN KEY(pago_id) REFERENCES pagos(id) ON DELETE CASCADE)")
+        db.execSQL("CREATE TABLE pagos_no_socios (id INTEGER PRIMARY KEY, pago_id INTEGER, fecha_dia TEXT, actividad_id INTEGER, FOREIGN KEY(pago_id) REFERENCES pagos(id) ON DELETE CASCADE, FOREIGN KEY(actividad_id) REFERENCES actividades(id) ON DELETE CASCADE)")
 
         db.execSQL("INSERT INTO administradores (usuario, password) VALUES ('admin', '1234')")
+        db.execSQL("INSERT INTO actividades (nombre, descripcion) VALUES ('Natación', 'Piscina libre')")
+        db.execSQL("INSERT INTO actividades (nombre, descripcion) VALUES ('Gimnasia', 'Clase de funcional')")
+        db.execSQL("INSERT INTO actividades (nombre, descripcion) VALUES ('Hockey', 'Entrenamiento femenino')")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS administradores")
+        Log.w("DBHelper", "onUpgrade: Borrando y recreando la base de datos.")
         db.execSQL("DROP TABLE IF EXISTS pagos_no_socios")
         db.execSQL("DROP TABLE IF EXISTS pagos_socios")
         db.execSQL("DROP TABLE IF EXISTS pagos")
         db.execSQL("DROP TABLE IF EXISTS no_socios")
         db.execSQL("DROP TABLE IF EXISTS socios")
-        db.execSQL("DROP TABLE IF EXISTS usuarios")
         db.execSQL("DROP TABLE IF EXISTS actividades")
+        db.execSQL("DROP TABLE IF EXISTS usuarios")
+        db.execSQL("DROP TABLE IF EXISTS administradores")
         onCreate(db)
     }
 
-    fun validarAdministrador(usuario: String, password: String): Boolean {
-        val db = this.readableDatabase
-        val cursor = db.rawQuery(
-            "SELECT * FROM administradores WHERE usuario = ? AND password = ?",
-            arrayOf(usuario, password)
-        )
-        val existe = cursor.moveToFirst()
-        cursor.close()
-        return existe
+    // -------------------- HELPERS DE FECHAS --------------------
+    fun sumarMes(fecha: String, meses: Int = 1): String {
+        return try {
+            // Primero normalizar la fecha al formato yyyy-MM-dd
+            val fechaNormalizada = convertirFechaParaComparacion(fecha)
+                ?: return "Fecha inválida: $fecha"
+
+            val partes = fechaNormalizada.split("-")
+            if (partes.size != 3) return "Fecha inválida: $fecha"
+
+            val cal = Calendar.getInstance().apply {
+                set(partes[0].toInt(), partes[1].toInt() - 1, partes[2].toInt())
+                add(Calendar.MONTH, meses)
+            }
+
+            String.format("%04d-%02d-%02d",
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH) + 1,
+                cal.get(Calendar.DAY_OF_MONTH))
+
+        } catch (e: Exception) {
+            Log.e("DBHelper", "Error en sumarMes: $fecha - ${e.message}")
+            "Fecha inválida: $fecha"
+        }
     }
 
-    fun insertarUsuario(
-        nombre: String,
-        apellido: String,
-        dni: String,
-        fechaNac: String,
-        telefono: String,
-        email: String,
-        tipoUsuario: Int
-    ): Long {
-        val db = writableDatabase
+    fun fechaHoyString(): String {
+        val c = Calendar.getInstance()
+        return String.format("%04d-%02d-%02d", c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH))
+    }
+
+    private fun obtenerFechaUltimoPago(usuarioId: Long): String? {
+        return readableDatabase.rawQuery("SELECT fecha_ultimo_pago FROM socios WHERE usuario_id = ?", arrayOf(usuarioId.toString())).use {
+            if (it.moveToFirst()) it.getString(it.getColumnIndexOrThrow("fecha_ultimo_pago")) else null
+        }
+    }
+
+    // -------------------- FUNCIONES USUARIO --------------------
+    fun insertarUsuario(nombre: String, apellido: String, dni: String, fechaNac: String, telefono: String, email: String, tipoUsuario: Int): Long {
         val values = ContentValues().apply {
             put("nombre", nombre)
             put("apellido", apellido)
@@ -145,342 +93,244 @@ class DBHelper(private val context: Context) :
             put("email", email)
             put("tipo_usuario", tipoUsuario)
         }
-        val result = db.insert("usuarios", null, values)
-        db.close()
-        return result
+        return writableDatabase.insert("usuarios", null, values)
     }
 
     fun existeDni(dni: String): Boolean {
-        val db = readableDatabase
-        val cursor = db.rawQuery("SELECT id FROM usuarios WHERE dni = ?", arrayOf(dni))
-        val existe = cursor.count > 0
-        cursor.close()
-        return existe
+        return readableDatabase.rawQuery("SELECT id FROM usuarios WHERE dni = ?", arrayOf(dni)).use { it.count > 0 }
     }
 
+    fun obtenerUsuarioIdPorDNI(dni: String): Long? {
+        return readableDatabase.rawQuery("SELECT id FROM usuarios WHERE dni = ?", arrayOf(dni)).use {
+            if (it.moveToFirst()) it.getLong(it.getColumnIndexOrThrow("id")) else null
+        }
+    }
+
+    // -------------------- FUNCIONES SOCIOS --------------------
     fun insertarSocio(usuarioId: Long, fechaAlta: String, aptoFisico: Int, fichaMedica: Int): Long {
-        val db = writableDatabase
         val values = ContentValues().apply {
             put("usuario_id", usuarioId)
             put("fecha_alta", fechaAlta)
             put("apto_fisico", aptoFisico)
             put("ficha_medica", fichaMedica)
         }
-        val result = db.insert("socios", null, values)
-        db.close()
-        return result
+        return writableDatabase.insert("socios", null, values)
     }
 
-    fun insertarNoSocio(usuarioId: Long, fechaRegistro: String): Long {
+    fun obtenerSocioPorDNI(dni: String): Socio? {
+        var socio: Socio? = null
+        readableDatabase.rawQuery("""
+            SELECT u.id, u.nombre, u.apellido, u.dni, u.email, u.telefono, s.fecha_alta
+            FROM usuarios u INNER JOIN socios s ON u.id = s.usuario_id
+            WHERE u.dni = ? AND u.tipo_usuario = 1
+        """, arrayOf(dni)).use { cursor ->
+            if (cursor.moveToFirst()) {
+                socio = Socio(
+                    idUsuario = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
+                    nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
+                    apellido = cursor.getString(cursor.getColumnIndexOrThrow("apellido")),
+                    dni = cursor.getString(cursor.getColumnIndexOrThrow("dni")),
+                    email = cursor.getString(cursor.getColumnIndexOrThrow("email")),
+                    telefono = cursor.getString(cursor.getColumnIndexOrThrow("telefono")),
+                    fechaInscripcion = cursor.getString(cursor.getColumnIndexOrThrow("fecha_alta"))
+                )
+            }
+        }
+        return socio
+    }
+
+    fun registrarPagoMensual(dni: String, monto: Double, metodoPago: String, cuotas: Int): Boolean {
         val db = writableDatabase
+        db.beginTransaction()
+        try {
+            val usuarioId = obtenerUsuarioIdPorDNI(dni) ?: throw Exception("Usuario no encontrado")
+
+            //  Contar pagos existentes
+            val cursorPagos = db.rawQuery("SELECT COUNT(*) FROM pagos WHERE usuario_id = ?", arrayOf(usuarioId.toString()))
+            val totalPagos = if (cursorPagos.moveToFirst()) cursorPagos.getInt(0) else 0
+            cursorPagos.close()
+
+            Log.d("DBHelper", "Registrando pago para DNI: $dni - Total pagos anteriores: $totalPagos")
+
+            // D primer pago usa fecha_alta, otros usan fecha actual
+            val fechaPagoFinal = if (totalPagos == 0) {
+                val cursorSocio = db.rawQuery("SELECT fecha_alta FROM socios WHERE usuario_id = ?", arrayOf(usuarioId.toString()))
+                val fechaAlta = if (cursorSocio.moveToFirst()) cursorSocio.getString(0) else fechaHoyString()
+                cursorSocio.close()
+                convertirFechaParaComparacion(fechaAlta) ?: fechaHoyString() // 🔹 Asegura formato yyyy-MM-dd
+            } else {
+                fechaHoyString()
+            }
+
+
+
+            Log.d("DBHelper", "Fecha de pago final: $fechaPagoFinal")
+
+            val updateValues = ContentValues().apply {
+                put("fecha_ultimo_pago", fechaPagoFinal)
+            }
+            db.update("socios", updateValues, "usuario_id = ?", arrayOf(usuarioId.toString()))
+
+            insertarPago(db, usuarioId, "CUOTA_MENSUAL", monto, metodoPago, cuotas, fechaPagoFinal, esSocio = true)
+
+            db.setTransactionSuccessful()
+            Log.d("DBHelper", "Pago mensual registrado EXITOSAMENTE para $dni - Fecha: $fechaPagoFinal")
+            return true
+
+        } catch (e: Exception) {
+            Log.e("DBHelper", "Error al registrar pago mensual: ${e.message}")
+            return false
+        } finally {
+            db.endTransaction()
+        }
+    }
+
+    // OBTENER FECHA_ALTA DEL SOCIO
+    private fun obtenerFechaAltaSocio(usuarioId: Long): String? {
+        return readableDatabase.rawQuery(
+            "SELECT fecha_alta FROM socios WHERE usuario_id = ?",
+            arrayOf(usuarioId.toString())
+        ).use { cursor ->
+            if (cursor.moveToFirst()) {
+                cursor.getString(cursor.getColumnIndexOrThrow("fecha_alta"))
+            } else {
+                null
+            }
+        }
+    }
+
+    //  CONTAR PAGOS
+    private fun obtenerTotalPagos(usuarioId: Long): Int {
+        return readableDatabase.rawQuery(
+            "SELECT COUNT(*) FROM pagos WHERE usuario_id = ?",
+            arrayOf(usuarioId.toString())
+        ).use { cursor ->
+            if (cursor.moveToFirst()) {
+                cursor.getInt(0)
+            } else {
+                0
+            }
+        }
+    }
+
+    // -------------------- FUNCIONES NO SOCIOS --------------------
+    fun insertarNoSocio(usuarioId: Long, fechaRegistro: String): Long {
         val values = ContentValues().apply {
             put("usuario_id", usuarioId)
             put("fecha_registro", fechaRegistro)
         }
-        val result = db.insert("no_socios", null, values)
-        db.close()
-        return result
+        return writableDatabase.insert("no_socios", null, values)
     }
 
-    fun obtenerUsuarioIdPorDNI(dni: String): Long? {
-        val db = readableDatabase
-        val cursor = db.rawQuery("SELECT id FROM usuarios WHERE dni = ?", arrayOf(dni))
-        val id = if (cursor.moveToFirst()) cursor.getLong(cursor.getColumnIndexOrThrow("id")) else null
-        cursor.close()
-        return id
-    }
-
-    fun obtenerActividades(): List<String> {
-        val lista = mutableListOf<String>()
-        val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT nombre FROM actividades", null)
-        if (cursor.moveToFirst()) {
-            do { lista.add(cursor.getString(0)) } while (cursor.moveToNext())
+    fun registrarPagoNoSocio(dni: String, monto: Double, metodoPago: String, cuotas: Int, nombreActividad: String, fechaDePago: String): Long {
+        val db = writableDatabase
+        db.beginTransaction()
+        try {
+            val usuarioId = obtenerUsuarioIdPorDNI(dni) ?: throw Exception("Usuario no encontrado")
+            val actividadId = obtenerActividadIdPorNombre(db, nombreActividad) ?: throw Exception("Actividad no encontrada")
+            val pagoId = insertarPago(db, usuarioId, "NO_SOCIO", monto, metodoPago, cuotas, fechaDePago, esSocio = false, actividadId = actividadId)
+            db.setTransactionSuccessful()
+            return pagoId
+        } catch (e: Exception) {
+            Log.e("DBHelper", "Error al registrar pago no socio: ${e.message}")
+            return -1L
+        } finally {
+            db.endTransaction()
         }
-        cursor.close()
-        return lista
     }
 
-    fun obtenerActividadIdPorNombre(db: SQLiteDatabase, nombreActividad: String): Long? {
-        val cursor = db.rawQuery("SELECT id FROM actividades WHERE nombre = ?", arrayOf(nombreActividad))
-        var id: Long? = null
-        if (cursor.moveToFirst()) {
-            id = cursor.getLong(cursor.getColumnIndexOrThrow("id"))
-        }
-        cursor.close()
-        return id
-    }
-
-    fun obtenerSocioPorDNI(dni: String): Socio? {
-        val db = readableDatabase
-        var socio: Socio? = null
-        val query = """
-            SELECT u.id, u.nombre, u.apellido, u.dni, u.email, u.telefono, s.fecha_alta
-            FROM usuarios u
-            INNER JOIN socios s ON u.id = s.usuario_id
-            WHERE u.dni = ? AND u.tipo_usuario = 1
-        """
-        val cursor = db.rawQuery(query, arrayOf(dni))
-        if (cursor.moveToFirst()) {
-            socio = Socio(
-                idUsuario = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
-                nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
-                apellido = cursor.getString(cursor.getColumnIndexOrThrow("apellido")),
-                dni = cursor.getString(cursor.getColumnIndexOrThrow("dni")),
-                email = cursor.getString(cursor.getColumnIndexOrThrow("email")),
-                telefono = cursor.getString(cursor.getColumnIndexOrThrow("telefono")),
-                fechaInscripcion = cursor.getString(cursor.getColumnIndexOrThrow("fecha_alta"))
-            )
-        }
-        cursor.close()
-        return socio
-    }
 
     fun obtenerNoSocioPorDNI(dni: String): NoSocio? {
-        val db = readableDatabase
         var noSocio: NoSocio? = null
-        val query = """
-            SELECT u.id, u.nombre, u.apellido, u.dni, u.email, u.telefono, ns.fecha_registro
-            FROM usuarios u
-            INNER JOIN no_socios ns ON u.id = ns.usuario_id
-            WHERE u.dni = ? AND u.tipo_usuario = 2
-        """
-        val cursor = db.rawQuery(query, arrayOf(dni))
-        if (cursor.moveToFirst()) {
-            noSocio = NoSocio(
-                idUsuario = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
-                nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
-                apellido = cursor.getString(cursor.getColumnIndexOrThrow("apellido")),
-                dni = cursor.getString(cursor.getColumnIndexOrThrow("dni")),
-                email = cursor.getString(cursor.getColumnIndexOrThrow("email")),
-                telefono = cursor.getString(cursor.getColumnIndexOrThrow("telefono")),
-                fechaRegistro = cursor.getString(cursor.getColumnIndexOrThrow("fecha_registro"))
-            )
+        readableDatabase.rawQuery("""
+        SELECT u.id, u.nombre, u.apellido, u.dni, u.email, u.telefono, ns.fecha_registro
+        FROM usuarios u INNER JOIN no_socios ns ON u.id = ns.usuario_id
+        WHERE u.dni = ? AND u.tipo_usuario = 2
+    """, arrayOf(dni)).use { cursor ->
+            if (cursor.moveToFirst()) {
+                noSocio = NoSocio(
+                    idUsuario = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
+                    nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
+                    apellido = cursor.getString(cursor.getColumnIndexOrThrow("apellido")),
+                    dni = cursor.getString(cursor.getColumnIndexOrThrow("dni")),
+                    email = cursor.getString(cursor.getColumnIndexOrThrow("email")),
+                    telefono = cursor.getString(cursor.getColumnIndexOrThrow("telefono")),
+                    fechaRegistro = cursor.getString(cursor.getColumnIndexOrThrow("fecha_registro"))
+                )
+            }
         }
-        cursor.close()
         return noSocio
     }
 
-    // Obtener fecha de alta del socio
-    fun obtenerFechaAltaSocio(usuarioId: Long): String? {
-        val db = readableDatabase
-        val cursor = db.rawQuery(
-            "SELECT fecha_alta FROM socios WHERE usuario_id = ?",
-            arrayOf(usuarioId.toString())
-        )
-        val fechaAlta = if (cursor.moveToFirst()) {
-            cursor.getString(cursor.getColumnIndexOrThrow("fecha_alta"))
-        } else null
-        cursor.close()
-        return fechaAlta
-    }
 
-    // Obtener fecha de registro del no socio
-    fun obtenerFechaRegistroNoSocio(usuarioId: Long): String? {
-        val db = readableDatabase
-        val cursor = db.rawQuery(
-            "SELECT fecha_registro FROM no_socios WHERE usuario_id = ?",
-            arrayOf(usuarioId.toString())
-        )
-        val fechaRegistro = if (cursor.moveToFirst()) {
-            cursor.getString(cursor.getColumnIndexOrThrow("fecha_registro"))
-        } else null
-        cursor.close()
-        return fechaRegistro
-    }
-
-    fun registrarPagoMensual(
-        dni: String,
-        monto: Double,
-        metodoPago: String,
-        cuotas: String,
-        fechaAlta: String
-    ): Boolean {
-        val db = writableDatabase
-
-        // 1. Buscar usuario_id por DNI
-        val usuarioId = obtenerUsuarioIdPorDNI(dni)
-        if (usuarioId == null) return false
-
-        // 2. Registrar en pagos
+    // -------------------- FUNCIONES COMUNES --------------------
+    private fun insertarPago(db: SQLiteDatabase, usuarioId: Long, tipoPago: String, monto: Double, metodoPago: String, cuotas: Int, fechaPago: String, esSocio: Boolean, actividadId: Long? = null): Long {
+        // Insert pago
         val pagoValues = ContentValues().apply {
             put("usuario_id", usuarioId)
-            put("tipo_pago", "CUOTA_MENSUAL")
+            put("tipo_pago", tipoPago)
             put("monto_total", monto)
             put("metodo_pago", metodoPago)
-            put("cuotas", cuotas.toInt())
-            put("fecha_pago", fechaAlta)   // o Calendar.getInstance().time.toString()
-            put("estado_pago", 1)          // 1 = pagado
+            put("cuotas", cuotas)
+            put("fecha_pago", fechaPago)
+            put("estado_pago", 1)
         }
+        val pagoId = db.insertOrThrow("pagos", null, pagoValues)
 
-        val pagoId = db.insert("pagos", null, pagoValues)
-        if (pagoId == -1L) {
-            return false
-        }
-
-        // 3. Registrar en pagos_socios
-        val calendario = Calendar.getInstance()
-        val mes = calendario.get(Calendar.MONTH) + 1
-        val anio = calendario.get(Calendar.YEAR)
-
-        val socioValues = ContentValues().apply {
-            put("pago_id", pagoId)
-            put("usuario_id", usuarioId)
-            put("mes", mes)
-            put("anio", anio)
-        }
-
-        val result = db.insert("pagos_socios", null, socioValues)
-        return result != -1L
-    }
-
-    // Registrar pago de no socio usando fecha de registro
-    fun registrarPagoNoSocio(
-        dni: String,
-        monto: Double,
-        metodoPago: String,
-        cuotas: Int,
-        nombreActividad: String,
-        fechaDePago: String  //
-    ): Long {
-        val db = writableDatabase
-        return try {
-            db.beginTransaction()
-            val usuarioId = obtenerUsuarioIdPorDNI(dni) ?: throw Exception("Usuario no encontrado con DNI: $dni")
-            val actividadId = obtenerActividadIdPorNombre(db, nombreActividad) ?: throw Exception("Actividad no encontrada: $nombreActividad")
-
-            // Usar fechaDePago en lugar de fechaRegistro
-            if (fechaDePago.isNullOrEmpty()) {
-                throw Exception("Fecha de pago no disponible para el no socio")
-            }
-
-            val pagoValues = ContentValues().apply {
-                put("usuario_id", usuarioId)
-                put("tipo_pago", "NO_SOCIO")
-                put("monto_total", monto)
-                put("metodo_pago", metodoPago)
-                put("cuotas", cuotas)
-                put("fecha_pago", fechaDePago)
-                put("estado_pago", 1)
-            }
-            val pagoId = db.insert("pagos", null, pagoValues)
-            if (pagoId == -1L) throw Exception("Error al registrar en la tabla 'pagos'")
-
-            val noSocioPagoValues = ContentValues().apply {
+        if (esSocio) {
+            val cal = Calendar.getInstance()
+            val socioValues = ContentValues().apply {
                 put("pago_id", pagoId)
-                put("fecha_dia", fechaDePago)
+                put("mes", cal.get(Calendar.MONTH) + 1)
+                put("anio", cal.get(Calendar.YEAR))
+            }
+            db.insertOrThrow("pagos_socios", null, socioValues)
+        } else {
+            val noSocioValues = ContentValues().apply {
+                put("pago_id", pagoId)
+                put("fecha_dia", fechaPago)
                 put("actividad_id", actividadId)
             }
-            val pagoNoSocioId = db.insert("pagos_no_socios", null, noSocioPagoValues)
-            if (pagoNoSocioId == -1L) throw Exception("Error al registrar en la tabla 'pagos_no_socios'")
-
-            db.setTransactionSuccessful()
-            pagoId
-        } catch (e: Exception) {
-            e.printStackTrace()
-            android.util.Log.e("DBHelper", "Error al registrar pago no socio: ${e.message}")
-            -1L
-        } finally {
-            db.endTransaction()
-            db.close()
+            db.insertOrThrow("pagos_no_socios", null, noSocioValues)
         }
+        return pagoId
     }
 
-    // Verificar si es socio
-    fun esSocio(usuarioId: Long): Boolean {
-        val db = readableDatabase
-        val cursor = db.rawQuery(
-            "SELECT id FROM socios WHERE usuario_id = ?",
-            arrayOf(usuarioId.toString())
-        )
-        val esSocio = cursor.count > 0
-        cursor.close()
-        return esSocio
-    }
-
-    // Ver si es no socio
-    fun esNoSocio(usuarioId: Long): Boolean {
-        val db = readableDatabase
-        val cursor = db.rawQuery(
-            "SELECT id FROM no_socios WHERE usuario_id = ?",
-            arrayOf(usuarioId.toString())
-        )
-        val esNoSocio = cursor.count > 0
-        cursor.close()
-        return esNoSocio
-    }
-
-    // CALCULAR FECHA DE VENCIMIENTO SUMANDO 30 DÍAS
-    fun calcularFechaVencimiento(fechaAlta: String): String {
-        // fechaAlta debe venir en formato yyyy-MM-dd
-        val partes = fechaAlta.split("-")
-        val anio = partes[0].toInt()
-        val mes = partes[1].toInt() - 1   // Calendar usa meses 0-11
-        val dia = partes[2].toInt()
-
-        val calendar = Calendar.getInstance()
-        calendar.set(anio, mes, dia)
-
-        // Sumamos 30 días, 1 mes aproximado
-        calendar.add(Calendar.DAY_OF_MONTH, 30)
-
-        val nuevoAnio = calendar.get(Calendar.YEAR)
-        val nuevoMes = calendar.get(Calendar.MONTH) + 1
-        val nuevoDia = calendar.get(Calendar.DAY_OF_MONTH)
-
-        return String.format("%04d-%02d-%02d", nuevoAnio, nuevoMes, nuevoDia)
-    }
-
-
-
-    // OBTENER SOCIOS VENCIDOS
     fun obtenerSociosVencidos(): List<SocioVencido> {
         val lista = mutableListOf<SocioVencido>()
-        val db = readableDatabase
+        val hoy = fechaHoyString()
 
-        val cursor = db.rawQuery("""
-        SELECT u.nombre, u.apellido, u.dni, s.fecha_alta
+        readableDatabase.rawQuery("""
+        SELECT u.nombre, u.apellido, u.dni, s.fecha_alta, s.fecha_ultimo_pago
         FROM usuarios u
         INNER JOIN socios s ON u.id = s.usuario_id
         WHERE u.tipo_usuario = 1
-    """, null)
+    """, null).use { cursor ->
+            if (cursor.moveToFirst()) {
+                do {
+                    val nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre"))
+                    val apellido = cursor.getString(cursor.getColumnIndexOrThrow("apellido"))
+                    val dni = cursor.getString(cursor.getColumnIndexOrThrow("dni"))
+                    val fechaAlta = cursor.getString(cursor.getColumnIndexOrThrow("fecha_alta"))
+                    val fechaUltimoPago = cursor.getString(cursor.getColumnIndexOrThrow("fecha_ultimo_pago"))
 
-        val hoy = fechaActual() // yyyy-MM-dd
+                    // Fecha base para cálculo: si tiene último pago se usa ese, si no, fecha de alta
+                    val fechaBase = fechaUltimoPago.ifEmpty { fechaAlta }
 
-        if (cursor.moveToFirst()) {
-            do {
-                val nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre"))
-                val apellido = cursor.getString(cursor.getColumnIndexOrThrow("apellido"))
-                val dni = cursor.getString(cursor.getColumnIndexOrThrow("dni"))
-                val fechaAltaOriginal = cursor.getString(cursor.getColumnIndexOrThrow("fecha_alta"))
+                    // Calcular vencimiento (fechaBase + 1 mes)
+                    val fechaVencimiento = sumarMes(convertirFechaParaComparacion(fechaBase) ?: fechaBase, 1)
 
-                val nombreCompleto = "$nombre $apellido"
-
-                // --- CONVERSIÓN CORRECTA DE dd/MM/yyyy → yyyy-MM-dd ---
-                val partes = fechaAltaOriginal.split("/")
-                if (partes.size != 3) continue
-
-                val dia = partes[0]
-                val mes = partes[1]
-                val anio = partes[2]
-
-                val fechaAltaFormateada = "$anio-$mes-$dia"
-                // ------------------------------------------------------
-
-                val vencimiento = calcularFechaVencimiento(fechaAltaFormateada)
-
-                if (vencimiento < hoy) {
-                    lista.add(
-                        SocioVencido(
-                            nombre = nombreCompleto,
+                    // Si la fecha de vencimiento es menor que hoy, está vencido
+                    if (fechaVencimiento < hoy) {
+                        lista.add(SocioVencido(
+                            nombre = "$nombre $apellido",
                             dni = dni,
-                            fechaAlta = fechaAltaOriginal,
-                            vencimiento = vencimiento
-                        )
-                    )
-                }
-
-            } while (cursor.moveToNext())
+                            fechaAlta = fechaAlta,
+                            vencimiento = formatearFechaParaMostrar(fechaVencimiento)
+                        ))
+                    }
+                } while (cursor.moveToNext())
+            }
         }
 
         cursor.close()
@@ -539,6 +389,56 @@ class DBHelper(private val context: Context) :
 
             // 1. Obtener usuario_id
             val usuarioId = obtenerUsuarioIdPorDNI(dni) ?: return false
+    // Verificar si un socio está vencido
+    private fun estaVencido(fechaUltimoPago: String): Boolean {
+        return try {
+            val calPago = Calendar.getInstance().apply {
+                val partes = fechaUltimoPago.split("-")
+                set(partes[0].toInt(), partes[1].toInt() - 1, partes[2].toInt())
+            }
+
+            val calHoy = Calendar.getInstance()
+
+
+
+            val mismoAnio = calPago.get(Calendar.YEAR) == calHoy.get(Calendar.YEAR)
+            val mismoMes = calPago.get(Calendar.MONTH) == calHoy.get(Calendar.MONTH)
+            !(mismoAnio && mismoMes)
+
+        } catch (e: Exception) {
+            Log.e("DBHelper", "Error verificando vencimiento: $fechaUltimoPago - ${e.message}")
+            false
+        }
+    }
+
+    //  Calcular próximo vencimiento para mostrar
+    private fun calcularProximoVencimiento(fechaUltimoPago: String): String {
+        return try {
+            val fechaVencimiento = sumarMes(fechaUltimoPago, 1)
+            formatearFechaParaMostrar(fechaVencimiento)
+        } catch (e: Exception) {
+            "Fecha inválida"
+        }
+    }
+
+    //  Fecha conversión, esto es porque se usaron diferentes formas de fechas
+    private fun convertirFechaParaComparacion(fechaOriginal: String): String? {
+        return try {
+            // Si ya está en formato yyyy-MM-dd, devolver tal cual
+            if (fechaOriginal.matches(Regex("\\d{4}-\\d{2}-\\d{2}"))) {
+                return fechaOriginal
+            }
+
+            // Si está en formato dd/MM/yyyy, convertir a yyyy-MM-dd
+            if (fechaOriginal.matches(Regex("\\d{1,2}/\\d{1,2}/\\d{4}"))) {
+                val partes = fechaOriginal.split("/")
+                if (partes.size == 3) {
+                    val dia = partes[0].padStart(2, '0')
+                    val mes = partes[1].padStart(2, '0')
+                    val anio = partes[2]
+                    return "$anio-$mes-$dia"
+                }
+            }
 
 
             db.delete("pagos_socios", "usuario_id = ?", arrayOf(usuarioId.toString()))
@@ -557,22 +457,57 @@ class DBHelper(private val context: Context) :
             db.close()
         }
     }
-
-
-    // FECHA ACTUAL yyyy-MM-dd
-    fun fechaActual(): String {
-        val c = Calendar.getInstance()
-        return String.format(
-            "%04d-%02d-%02d",
-            c.get(Calendar.YEAR),
-            c.get(Calendar.MONTH) + 1,
-            c.get(Calendar.DAY_OF_MONTH)
-        )
+            // Si no coincide con ningún formato conocido
+            Log.e("DBHelper", "Formato de fecha no reconocido: $fechaOriginal")
+            null
+        } catch (e: Exception) {
+            Log.e("DBHelper", "Error convirtiendo fecha: $fechaOriginal - ${e.message}")
+            null
+        }
     }
 
+    //
+    private fun formatearFechaParaMostrar(fechaBD: String): String {
+        return try {
+            // Convierte de yyyy-MM-dd a dd/MM/yyyy para mostrar
+            if (fechaBD.matches(Regex("\\d{4}-\\d{2}-\\d{2}"))) {
+                val partes = fechaBD.split("-")
+                "${partes[2]}/${partes[1]}/${partes[0]}"
+            } else {
+                fechaBD
+            }
+        } catch (e: Exception) {
+            fechaBD
+        }
+    }
+
+    fun obtenerActividades(): List<String> {
+        val lista = mutableListOf<String>()
+        readableDatabase.rawQuery("SELECT nombre FROM actividades", null).use { cursor ->
+            if (cursor.moveToFirst()) do { lista.add(cursor.getString(0)) } while (cursor.moveToNext())
+        }
+        return lista
+    }
+
+    private fun obtenerActividadIdPorNombre(db: SQLiteDatabase, nombreActividad: String): Long? {
+        return db.rawQuery("SELECT id FROM actividades WHERE nombre = ?", arrayOf(nombreActividad)).use { cursor ->
+            if (cursor.moveToFirst()) cursor.getLong(cursor.getColumnIndexOrThrow("id")) else null
+        }
+    }
+
+    fun validarAdministrador(usuario: String, password: String): Boolean {
+        return readableDatabase.rawQuery("SELECT * FROM administradores WHERE usuario = ? AND password = ?", arrayOf(usuario, password)).use { it.moveToFirst() }
+    }
+
+    fun esSocio(usuarioId: Long): Boolean {
+        return readableDatabase.rawQuery("SELECT id FROM socios WHERE usuario_id = ?", arrayOf(usuarioId.toString())).use { it.count > 0 }
+    }
+
+    fun tienePagosPrevios(usuarioId: Long): Boolean {
+        return readableDatabase.rawQuery("SELECT id FROM pagos WHERE usuario_id = ? LIMIT 1", arrayOf(usuarioId.toString())).use { it.count > 0 }
+    }
+
+    fun calcularFechaVencimiento(fechaBase: String): String = sumarMes(fechaBase)
+
+
 }
-
-
-
-
-

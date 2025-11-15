@@ -189,7 +189,8 @@
                     android:text="@string/vencimiento"
                     android:textSize="14sp"
                     android:textColor="@color/black"
-                    android:fontFamily="@font/nunito_semibold" />
+                    android:fontFamily="@font/nunito_semibold"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/vencimientoCuota"
@@ -200,7 +201,8 @@
                     android:textSize="14sp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/nunito_regular"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_marginBottom="12dp"
+                    android:visibility="gone"/>
 
                 <View
                     android:layout_width="match_parent"

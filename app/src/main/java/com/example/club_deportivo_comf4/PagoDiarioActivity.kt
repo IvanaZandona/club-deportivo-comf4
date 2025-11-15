@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 class PagoDiarioActivity : AppCompatActivity() {
 
     private val dbHelper: DBHelper by lazy { DBHelper(this) }
+
     private lateinit var inputDNI: EditText
     private lateinit var inputMonto: EditText
     private lateinit var spinnerActividad: Spinner
@@ -36,9 +37,6 @@ class PagoDiarioActivity : AppCompatActivity() {
         btnPagar = findViewById(R.id.btnPagar)
     }
 
-
-
-     //Menú desplegables
     private fun configurarSpinners() {
         val actividades = dbHelper.obtenerActividades()
         spinnerActividad.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, actividades)
@@ -48,9 +46,7 @@ class PagoDiarioActivity : AppCompatActivity() {
         spinnerCuotas.visibility = View.GONE
     }
 
-    //"Redirecciones"/Eventos
     private fun configurarListeners() {
-        findViewById<LinearLayout>(R.id.btnVolver).setOnClickListener { finish() }
         findViewById<ImageView>(R.id.iconoVolver).setOnClickListener { finish() }
 
         val radioGroup = findViewById<RadioGroup>(R.id.radioGroupMetodo)
@@ -65,7 +61,6 @@ class PagoDiarioActivity : AppCompatActivity() {
         btnPagar.setOnClickListener { procesarPagoDiario() }
     }
 
-    //Buscador de No Socio por DNI
     private fun buscarNoSocio() {
         val dni = inputDNI.text.toString().trim()
         if (dni.isNotEmpty()) {
@@ -74,15 +69,13 @@ class PagoDiarioActivity : AppCompatActivity() {
                 Toast.makeText(this, "No se encontró un no socio con ese DNI", Toast.LENGTH_SHORT).show()
                 inputDNI.error = "No socio no encontrado"
             } else {
-                Toast.makeText(this, "No socio encontrado: ${noSocio.nombre} ${noSocio.apellido} - Fecha Registro: ${noSocio.fechaRegistro}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "No socio: ${noSocio.nombre} ${noSocio.apellido}", Toast.LENGTH_LONG).show()
                 inputDNI.error = null
             }
         }
     }
 
-    //Recolectamos la info de los imputs
     private fun procesarPagoDiario() {
-        // 1. Recolectar datos de la interfaz
         val dni = inputDNI.text.toString().trim()
         val montoTexto = inputMonto.text.toString().trim()
         val actividadSeleccionada = spinnerActividad.selectedItem?.toString() ?: ""
@@ -91,12 +84,13 @@ class PagoDiarioActivity : AppCompatActivity() {
             rbTarjeta.isChecked -> "TARJETA"
             else -> ""
         }
+        val cuotasSeleccionadas = if (metodoPago == "TARJETA") spinnerCuotas.selectedItem.toString() else "1"
 
-        // 2. Validaciones de campos vacíos y monto
         if (dni.isEmpty() || montoTexto.isEmpty() || metodoPago.isEmpty() || actividadSeleccionada.isEmpty()) {
             Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_LONG).show()
             return
         }
+
         val monto = montoTexto.toDoubleOrNull()
         if (monto == null || monto <= 0) {
             Toast.makeText(this, "Ingrese un monto válido", Toast.LENGTH_LONG).show()
@@ -104,19 +98,14 @@ class PagoDiarioActivity : AppCompatActivity() {
             return
         }
 
-        // 3.  Obtenemos el objeto 'NoSocio' completo una sola vez.
         val noSocio = dbHelper.obtenerNoSocioPorDNI(dni)
-
-        // 4. Si la búsqueda no devuelve nada, el no socio no existe.
         if (noSocio == null) {
             Toast.makeText(this, "No se encontró un no socio registrado con ese DNI", Toast.LENGTH_SHORT).show()
             inputDNI.error = "No socio no encontrado"
-            return // Detenemos todo el proceso.
+            return
         }
 
-        val fechaDePago = noSocio.fechaRegistro
-        val cuotasSeleccionadas = if (metodoPago == "TARJETA") spinnerCuotas.selectedItem.toString() else "1"
-
+        val fechaDePago = dbHelper.fechaHoyString()
 
         val idTransaccion = dbHelper.registrarPagoNoSocio(
             dni = dni,
@@ -124,7 +113,7 @@ class PagoDiarioActivity : AppCompatActivity() {
             metodoPago = metodoPago,
             cuotas = cuotasSeleccionadas.toInt(),
             nombreActividad = actividadSeleccionada,
-            fechaDePago = fechaDePago //
+            fechaDePago = fechaDePago
         )
 
         if (idTransaccion > -1L) {
@@ -137,7 +126,7 @@ class PagoDiarioActivity : AppCompatActivity() {
                 putExtra("metodoPago", metodoPago)
                 putExtra("cuotas", cuotasSeleccionadas)
                 putExtra("monto", monto)
-                putExtra("fechaPago", fechaDePago) // Pasamos la fecha al comprobante
+                putExtra("fechaPago", fechaDePago)
             }
             startActivity(intent)
             finish()
@@ -146,9 +135,8 @@ class PagoDiarioActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onDestroy() {
-        try { dbHelper.close() } catch (e: Exception) { }
+        dbHelper.close()
         super.onDestroy()
     }
 }

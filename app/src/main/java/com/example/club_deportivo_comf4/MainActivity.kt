@@ -19,6 +19,9 @@ class MainActivity : AppCompatActivity() {
         val inputPassword = findViewById<EditText>(R.id.contrasena)
         val btnIngresar: Button = findViewById(R.id.btnIngresar)
 
+
+
+
         // Instancia de BD
         val db = DBHelper(this)
 
@@ -27,6 +30,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }*/
+
 
         btnIngresar.setOnClickListener {
             val usuario = inputUsuario.text.toString().trim()

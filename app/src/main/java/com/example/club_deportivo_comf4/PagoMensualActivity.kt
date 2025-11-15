@@ -8,27 +8,41 @@ import androidx.appcompat.app.AppCompatActivity
 
 class PagoMensualActivity : AppCompatActivity() {
 
-    private lateinit var dbHelper: DBHelper
+    private val dbHelper: DBHelper by lazy { DBHelper(this) }
+
+    private lateinit var inputDNI: EditText
+    private lateinit var inputMonto: EditText
+    private lateinit var rbEfectivo: RadioButton
+    private lateinit var rbTarjeta: RadioButton
+    private lateinit var spinnerCuotas: Spinner
+    private lateinit var btnPagar: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_pago_mensual)
 
-        dbHelper = DBHelper(this)
+        inicializarVistas()
+        configurarSpinners()
+        configurarListeners()
+    }
 
-        val inputDNI = findViewById<EditText>(R.id.inputDNI)
-        val inputMonto = findViewById<EditText>(R.id.inputMonto)
-        val rbEfectivo = findViewById<RadioButton>(R.id.rbEfectivo)
-        val rbTarjeta = findViewById<RadioButton>(R.id.rbTarjeta)
-        val spinnerCuotas = findViewById<Spinner>(R.id.spinnerCuotas)
-        val btnPagar = findViewById<LinearLayout>(R.id.btnPagar)
+    private fun inicializarVistas() {
+        inputDNI = findViewById(R.id.inputDNI)
+        inputMonto = findViewById(R.id.inputMonto)
+        rbEfectivo = findViewById(R.id.rbEfectivo)
+        rbTarjeta = findViewById(R.id.rbTarjeta)
+        spinnerCuotas = findViewById(R.id.spinnerCuotas)
+        btnPagar = findViewById(R.id.btnPagar)
+    }
 
+    private fun configurarSpinners() {
         val cuotas = arrayOf("1", "3", "6")
         spinnerCuotas.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, cuotas)
         spinnerCuotas.isEnabled = false
+    }
 
-
+    private fun configurarListeners() {
         findViewById<ImageView>(R.id.iconoVolver).setOnClickListener { finish() }
 
         val radioGroup = findViewById<RadioGroup>(R.id.radioGroupMetodo)
@@ -37,33 +51,31 @@ class PagoMensualActivity : AppCompatActivity() {
         }
 
         inputDNI.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                val dni = inputDNI.text.toString().trim()
-                if (dni.isNotEmpty()) {
-                    val socio = dbHelper.obtenerSocioPorDNI(dni)
-                    if (socio == null) {
-                        Toast.makeText(this, "No se encontró ningún socio con ese DNI", Toast.LENGTH_SHORT).show()
-                        inputDNI.error = "Socio no encontrado"
-                    } else {
-                        Toast.makeText(this, "Socio encontrado: ${socio.nombre} ${socio.apellido} - Fecha Alta: ${socio.fechaInscripcion}", Toast.LENGTH_LONG).show()
-                        inputDNI.error = null
-                    }
-                }
-            }
+            if (!hasFocus) buscarSocio()
         }
 
-        btnPagar.setOnClickListener {
-            registrarPago()
+        btnPagar.setOnClickListener { registrarPago() }
+    }
+
+    private fun buscarSocio() {
+        val dni = inputDNI.text.toString().trim()
+        if (dni.isNotEmpty()) {
+            val socio = dbHelper.obtenerSocioPorDNI(dni)
+            if (socio != null) {
+                Toast.makeText(
+                    this,
+                    "Socio encontrado: ${socio.nombre} ${socio.apellido} - Fecha Alta: ${socio.fechaInscripcion}",
+                    Toast.LENGTH_LONG
+                ).show()
+                inputDNI.error = null
+            } else {
+                Toast.makeText(this, "No se encontró ningún socio con ese DNI", Toast.LENGTH_SHORT).show()
+                inputDNI.error = "Socio no encontrado"
+            }
         }
     }
 
     private fun registrarPago() {
-        val inputDNI = findViewById<EditText>(R.id.inputDNI)
-        val inputMonto = findViewById<EditText>(R.id.inputMonto)
-        val rbEfectivo = findViewById<RadioButton>(R.id.rbEfectivo)
-        val rbTarjeta = findViewById<RadioButton>(R.id.rbTarjeta)
-        val spinnerCuotas = findViewById<Spinner>(R.id.spinnerCuotas)
-
         val dni = inputDNI.text.toString().trim()
         val montoTexto = inputMonto.text.toString().trim()
         val metodoPago = when {
@@ -71,10 +83,7 @@ class PagoMensualActivity : AppCompatActivity() {
             rbTarjeta.isChecked -> "TARJETA"
             else -> ""
         }
-        val cuotasSeleccionadas = if (rbTarjeta.isChecked)
-            spinnerCuotas.selectedItem?.toString() ?: "1"
-        else
-            "1"
+        val cuotasSeleccionadas = if (rbTarjeta.isChecked) spinnerCuotas.selectedItem?.toString() ?: "1" else "1"
 
         // Validaciones básicas
         if (dni.isEmpty() || montoTexto.isEmpty() || metodoPago.isEmpty()) {
@@ -89,52 +98,39 @@ class PagoMensualActivity : AppCompatActivity() {
             return
         }
 
-        // Obtener usuarioId
-        val usuarioId = dbHelper.obtenerUsuarioIdPorDNI(dni)
-        if (usuarioId == null) {
-            Toast.makeText(this, "No se pudo obtener el ID del usuario", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // Verificar que sea socio
-        if (!dbHelper.esSocio(usuarioId)) {
-            Toast.makeText(this, "El usuario con DNI $dni no es un socio registrado", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // Obtener fecha de alta del socio
-        val fechaAlta = dbHelper.obtenerFechaAltaSocio(usuarioId)
-        if (fechaAlta == null) {
-            Toast.makeText(this, "No se pudo obtener la fecha de alta del socio", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // Obtener datos del socio para el comprobante
         val socio = dbHelper.obtenerSocioPorDNI(dni)
         if (socio == null) {
-            Toast.makeText(this, "No se pudieron obtener los datos del socio", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "No se encontraron datos del socio", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Registrar pago usando la fecha de alta del socio
-        val exito = dbHelper.registrarPagoMensual(dni, monto, metodoPago, cuotasSeleccionadas, fechaAlta)
+        //  Solo llamar al mét
+        val exito = dbHelper.registrarPagoMensual(dni, monto, metodoPago, cuotasSeleccionadas.toInt())
+
         if (exito) {
             Toast.makeText(this, "Pago registrado correctamente", Toast.LENGTH_SHORT).show()
 
+            // Para el comprobante, usar fecha_alta como fecha de pago (es lo que se usó para primer pago)
             val intent = Intent(this, ComprobantePagoMensualActivity::class.java).apply {
                 putExtra("dni", dni)
                 putExtra("nombreUsuario", "${socio.nombre} ${socio.apellido}")
                 putExtra("metodoPago", metodoPago)
                 putExtra("cuotas", cuotasSeleccionadas)
                 putExtra("monto", monto)
-                putExtra("fechaPago", fechaAlta) // Usar la fecha de alta del socio
-                intent.putExtra("fechaAlta", socio.fechaInscripcion)
-
+                putExtra("fechaPago", socio.fechaInscripcion) //  Usar fecha de inscripción
+                putExtra("fechaAlta", socio.fechaInscripcion)
             }
             startActivity(intent)
             finish()
         } else {
             Toast.makeText(this, "Error al registrar el pago", Toast.LENGTH_SHORT).show()
         }
+
+
+    }
+
+    override fun onDestroy() {
+        dbHelper.close()
+        super.onDestroy()
     }
 }

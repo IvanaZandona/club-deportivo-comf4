@@ -6,4 +6,3 @@ data class SocioVencido(
     val fechaAlta: String,
     val vencimiento: String
 )
-
