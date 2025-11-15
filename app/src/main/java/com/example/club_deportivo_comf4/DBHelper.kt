@@ -487,7 +487,76 @@ class DBHelper(private val context: Context) :
         return lista
     }
 
+    fun obtenerTodosLosSocios(hoy: String): List<Socio> {
+        val lista = mutableListOf<Socio>()
+        val db = readableDatabase
+        val query = """
+        SELECT u.id, u.nombre, u.apellido, u.dni, u.email, u.telefono, s.fecha_alta
+        FROM usuarios u
+        INNER JOIN socios s ON u.id = s.usuario_id
+        WHERE u.tipo_usuario = 1
+    """
+        val cursor = db.rawQuery(query, null)
 
+        if (cursor.moveToFirst()) {
+            do {
+                val nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre"))
+                val apellido = cursor.getString(cursor.getColumnIndexOrThrow("apellido"))
+                val fechaAltaOriginal = cursor.getString(cursor.getColumnIndexOrThrow("fecha_alta"))
+
+                // Convierte la fecha de "dd/MM/yyyy" a "yyyy-MM-dd" para el cálculo
+                val partes = fechaAltaOriginal.split("/")
+                val fechaAltaFormateada = if (partes.size == 3) "${partes[2]}-${partes[1]}-${partes[0]}" else fechaAltaOriginal
+
+                val vencimiento = calcularFechaVencimiento(fechaAltaFormateada)
+
+                val estado = if (vencimiento < hoy) "Vencido" else "Activo"
+
+                lista.add(
+                    Socio(
+                        idUsuario = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
+                        nombre = nombre,
+                        apellido = apellido,
+                        dni = cursor.getString(cursor.getColumnIndexOrThrow("dni")),
+                        email = cursor.getString(cursor.getColumnIndexOrThrow("email")),
+                        telefono = cursor.getString(cursor.getColumnIndexOrThrow("telefono")),
+                        fechaInscripcion = fechaAltaOriginal,
+
+                    )
+                )
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return lista
+    }
+
+
+
+    fun eliminarSocio(dni: String): Boolean {
+        val db = writableDatabase
+        return try {
+            db.beginTransaction()
+
+            // 1. Obtener usuario_id
+            val usuarioId = obtenerUsuarioIdPorDNI(dni) ?: return false
+
+
+            db.delete("pagos_socios", "usuario_id = ?", arrayOf(usuarioId.toString()))
+            db.delete("socios", "usuario_id = ?", arrayOf(usuarioId.toString()))
+
+
+            val filasEliminadas = db.delete("usuarios", "id = ?", arrayOf(usuarioId.toString()))
+
+            db.setTransactionSuccessful()
+            filasEliminadas > 0
+        } catch (e: Exception) {
+            android.util.Log.e("DBHelper", "Error al eliminar socio: ${e.message}")
+            false
+        } finally {
+            db.endTransaction()
+            db.close()
+        }
+    }
 
 
     // FECHA ACTUAL yyyy-MM-dd
