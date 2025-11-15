@@ -2,83 +2,158 @@ package com.example.club_deportivo_comf4
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.LinearLayout
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.Spinner
-import androidx.activity.enableEdgeToEdge
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import android.widget.Toast
-
 
 class PagoDiarioActivity : AppCompatActivity() {
+
+    private val dbHelper: DBHelper by lazy { DBHelper(this) }
+    private lateinit var inputDNI: EditText
+    private lateinit var inputMonto: EditText
+    private lateinit var spinnerActividad: Spinner
+    private lateinit var rbEfectivo: RadioButton
+    private lateinit var rbTarjeta: RadioButton
+    private lateinit var spinnerCuotas: Spinner
+    private lateinit var btnPagar: LinearLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_pago_diario)
 
-        //inputs
-        val spinnerActividad = findViewById<Spinner>(R.id.spinnerActividad)
-        val rbEfectivo = findViewById<RadioButton>(R.id.rbEfectivo)
-        val rbTarjeta = findViewById<RadioButton>(R.id.rbTarjeta)
-        val spinnerCuotas = findViewById<Spinner>(R.id.spinnerCuotas)
+        inicializarVistas()
+        configurarSpinners()
+        configurarListeners()
+    }
 
-        // Boton "Volver" (el rectangular de abajo)
-        val btnVolver = findViewById<LinearLayout>(R.id.btnVolver)
-        btnVolver.setOnClickListener {
-            finish() // vuelve al menu anterior sin crear otra instancia
-        }
-
-        // Icono superior volver (mismo comportamiento)
-        val iconoVolver = findViewById<android.widget.ImageView>(R.id.iconoVolver)
-        iconoVolver.setOnClickListener {
-            finish()
-        }
+    private fun inicializarVistas() {
+        inputDNI = findViewById(R.id.inputDNI)
+        inputMonto = findViewById(R.id.inputMonto)
+        spinnerActividad = findViewById(R.id.spinnerActividad)
+        rbEfectivo = findViewById(R.id.rbEfectivo)
+        rbTarjeta = findViewById(R.id.rbTarjeta)
+        spinnerCuotas = findViewById(R.id.spinnerCuotas)
+        btnPagar = findViewById(R.id.btnPagar)
+    }
 
 
-        // Cargar actividades desde la BD
-        val db = DBHelper(this)
-        val actividades = db.obtenerActividades()
 
-        if (actividades.isNotEmpty()) {
-            val adapterActividades = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, actividades)
-            spinnerActividad.adapter = adapterActividades
-        } else {
-            Toast.makeText(this, "No hay actividades cargadas en la base de datos", Toast.LENGTH_SHORT).show()
-        }
+     //Menú desplegables
+    private fun configurarSpinners() {
+        val actividades = dbHelper.obtenerActividades()
+        spinnerActividad.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, actividades)
 
-        // Cargar opciones del spinner de cant cuotas (solo para tarjeta)
         val cuotas = arrayOf("1", "3", "6")
-        spinnerCuotas.adapter =
-            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, cuotas)
-        // cambio de selección
+        spinnerCuotas.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, cuotas)
+        spinnerCuotas.visibility = View.GONE
+    }
+
+    //"Redirecciones"/Eventos
+    private fun configurarListeners() {
+        findViewById<LinearLayout>(R.id.btnVolver).setOnClickListener { finish() }
+        findViewById<ImageView>(R.id.iconoVolver).setOnClickListener { finish() }
+
         val radioGroup = findViewById<RadioGroup>(R.id.radioGroupMetodo)
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
-            spinnerCuotas.isEnabled = checkedId == R.id.rbTarjeta
+            spinnerCuotas.visibility = if (checkedId == R.id.rbTarjeta) View.VISIBLE else View.GONE
         }
 
-        // --- Botón pagar
-        val btnPagar = findViewById<LinearLayout>(R.id.btnPagar)
-        btnPagar.setOnClickListener {
-            val intent = Intent(this, ComprobantePagoDiarioActivity::class.java)
+        inputDNI.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) buscarNoSocio()
+        }
 
-            // enviar datos del pago (para mostrar en el comprobante)
-            val actividadSeleccionada = spinnerActividad.selectedItem?.toString() ?: "Sin actividad"
-            val metodoPago = if (rbEfectivo.isChecked) "EFECTIVO" else "TARJETA"
-            val cuotasSeleccionadas = spinnerCuotas.selectedItem?.toString() ?: "1"
-            val monto = 32_000 // dsp lo obtenemos del campo EditText
+        btnPagar.setOnClickListener { procesarPagoDiario() }
+    }
 
-            intent.putExtra("actividad", actividadSeleccionada)
-            intent.putExtra("metodoPago", metodoPago)
-            intent.putExtra("cuotas", cuotasSeleccionadas)
-            intent.putExtra("monto", monto)
+    //Buscador de No Socio por DNI
+    private fun buscarNoSocio() {
+        val dni = inputDNI.text.toString().trim()
+        if (dni.isNotEmpty()) {
+            val noSocio = dbHelper.obtenerNoSocioPorDNI(dni)
+            if (noSocio == null) {
+                Toast.makeText(this, "No se encontró un no socio con ese DNI", Toast.LENGTH_SHORT).show()
+                inputDNI.error = "No socio no encontrado"
+            } else {
+                Toast.makeText(this, "No socio encontrado: ${noSocio.nombre} ${noSocio.apellido} - Fecha Registro: ${noSocio.fechaRegistro}", Toast.LENGTH_LONG).show()
+                inputDNI.error = null
+            }
+        }
+    }
 
+    //Recolectamos la info de los imputs
+    private fun procesarPagoDiario() {
+        // 1. Recolectar datos de la interfaz
+        val dni = inputDNI.text.toString().trim()
+        val montoTexto = inputMonto.text.toString().trim()
+        val actividadSeleccionada = spinnerActividad.selectedItem?.toString() ?: ""
+        val metodoPago = when {
+            rbEfectivo.isChecked -> "EFECTIVO"
+            rbTarjeta.isChecked -> "TARJETA"
+            else -> ""
+        }
+
+        // 2. Validaciones de campos vacíos y monto
+        if (dni.isEmpty() || montoTexto.isEmpty() || metodoPago.isEmpty() || actividadSeleccionada.isEmpty()) {
+            Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_LONG).show()
+            return
+        }
+        val monto = montoTexto.toDoubleOrNull()
+        if (monto == null || monto <= 0) {
+            Toast.makeText(this, "Ingrese un monto válido", Toast.LENGTH_LONG).show()
+            inputMonto.error = "Monto no válido"
+            return
+        }
+
+        // 3. BÚSQUEDA ÚNICA: Obtenemos el objeto 'NoSocio' completo una sola vez.
+        // Esto es como el "supermercado": traemos toda la información en un solo viaje.
+        val noSocio = dbHelper.obtenerNoSocioPorDNI(dni)
+
+        // 4. VALIDACIÓN CENTRAL: Si la búsqueda no devuelve nada, el no socio no existe.
+        if (noSocio == null) {
+            Toast.makeText(this, "No se encontró un no socio registrado con ese DNI", Toast.LENGTH_SHORT).show()
+            inputDNI.error = "No socio no encontrado"
+            return // Detenemos todo el proceso.
+        }
+
+        // 5. OBTENCIÓN DE LA FECHA: Usamos la 'fechaRegistro' que vino en el objeto 'noSocio'.
+        // Esta es la lógica clave que querías: usar la fecha asociada al usuario, no la del sistema.
+        val fechaDePago = noSocio.fechaRegistro
+        val cuotasSeleccionadas = if (metodoPago == "TARJETA") spinnerCuotas.selectedItem.toString() else "1"
+
+        // 6. REGISTRO EN BD: Llamamos a la función que guarda el pago.
+        // Le pasamos la 'fechaDePago' que acabamos de obtener.
+        val idTransaccion = dbHelper.registrarPagoNoSocio(
+            dni = dni,
+            monto = monto,
+            metodoPago = metodoPago,
+            cuotas = cuotasSeleccionadas.toInt(),
+            nombreActividad = actividadSeleccionada,
+            fechaDePago = fechaDePago // <-- Usando la fecha del no socio.
+        )
+
+        // 7. COMPROBANTE: Si el registro fue exitoso, preparamos y mostramos el comprobante.
+        if (idTransaccion > -1L) {
+            Toast.makeText(this, "Pago registrado correctamente", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, ComprobantePagoDiarioActivity::class.java).apply {
+                putExtra("idTransaccion", idTransaccion)
+                putExtra("dni", dni)
+                putExtra("nombreUsuario", "${noSocio.nombre} ${noSocio.apellido}")
+                putExtra("actividad", actividadSeleccionada)
+                putExtra("metodoPago", metodoPago)
+                putExtra("cuotas", cuotasSeleccionadas)
+                putExtra("monto", monto)
+                putExtra("fechaPago", fechaDePago) // Pasamos la fecha al comprobante
+            }
             startActivity(intent)
+            finish()
+        } else {
+            Toast.makeText(this, "Error al registrar el pago", Toast.LENGTH_LONG).show()
         }
+    }
 
 
+    override fun onDestroy() {
+        try { dbHelper.close() } catch (e: Exception) { }
+        super.onDestroy()
     }
 }

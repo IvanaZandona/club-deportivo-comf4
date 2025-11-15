@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="@drawable/fila_borde">
+
+    <TextView
+        android:id="@+id/tvNombre"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:text="Nombre"
+        android:textSize="12sp"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/tvDni"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="DNI"
+        android:textSize="12sp"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/tvFechaAlta"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="Fecha Alta"
+        android:textSize="12sp"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/tvVencimiento"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="Vto"
+        android:textSize="12sp"
+        android:textColor="@android:color/black" />
+
+</LinearLayout>

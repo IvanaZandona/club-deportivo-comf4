@@ -40,6 +40,7 @@
             android:textColor="@color/colorBlanco"
             android:textSize="28sp" />
 
+
         <!-- Contenedor del formulario -->
         <LinearLayout
             android:id="@+id/layoutFormulario"
@@ -232,27 +233,6 @@
                 android:fontFamily="@font/nunito_bold" />
         </LinearLayout>
 
-        <!-- Botón VOLVER -->
-        <LinearLayout
-            android:id="@+id/btnVolver"
-            android:layout_width="160dp"
-            android:layout_height="48dp"
-            android:orientation="vertical"
-            android:background="@drawable/bg_boton_cuadro_oscuro"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:layout_marginBottom="20dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Volver"
-                android:textColor="@color/colorBlanco"
-                android:textSize="18sp"
-                android:fontFamily="@font/nunito_bold" />
-        </LinearLayout>
 
         <!-- Espaciador -->
         <View

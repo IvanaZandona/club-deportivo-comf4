@@ -112,6 +112,7 @@
                             android:textColor="@color/black"
                             android:fontFamily="@font/nunito_semibold" />
                         <TextView
+                            android:id="@+id/emisionPago"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/emisionPago"
@@ -159,10 +160,23 @@
                     android:fontFamily="@font/nunito_semibold" />
 
                 <TextView
+                    android:id="@+id/nombreUsuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="20dp"
                     android:text="@string/clienteNombre"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/nunito_regular"
+                    android:layout_marginBottom="12dp" />
+
+
+                <TextView
+                    android:id="@+id/dniUsuario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:text="DNI del usuario"
                     android:textSize="14sp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/nunito_regular"
@@ -178,6 +192,7 @@
                     android:fontFamily="@font/nunito_semibold" />
 
                 <TextView
+                    android:id="@+id/vencimientoCuota"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="20dp"
