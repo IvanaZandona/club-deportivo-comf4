@@ -32,32 +32,24 @@ class ComprobantePagoDiarioActivity : AppCompatActivity() {
         val cuotas = intent.getStringExtra("cuotas") ?: "1"
         val monto = intent.getDoubleExtra("monto", 0.0)
 
-        // --- INICIO DE LA CORRECCIÓN ---
 
-        // 1. Recibir la fecha que se pasó desde la pantalla de pago.
-        // La fecha llega como un String, por ejemplo "2024-10-20".
         val fechaPagoRecibida = intent.getStringExtra("fechaPago") ?: ""
 
-        // 2. Formatear la fecha para mostrarla como "dd/MM/yyyy".
+
         val fechaFormateadaParaMostrar = try {
-            // Se define el formato en que llega la fecha (año-mes-día)
+
             val formatoOriginal = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            // Se define el formato en que se quiere mostrar (día-mes-año)
             val formatoDeseado = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            // Se intenta convertir el texto de la fecha a un objeto Date
             val fechaDate = formatoOriginal.parse(fechaPagoRecibida)
-            // Si la conversión fue exitosa, se formatea al nuevo estilo
             if (fechaDate != null) {
                 formatoDeseado.format(fechaDate)
             } else {
-                fechaPagoRecibida // Si es nula, se muestra como vino
+                fechaPagoRecibida
             }
         } catch (e: Exception) {
-            // Si hay un error (ej: el formato es inesperado), muestra la fecha tal como llegó.
             fechaPagoRecibida
         }
 
-        // --- FIN DE LA CORRECCIÓN ---
 
         // --- Asignar valores a los TextViews ---
         tvNombreUsuario.text = nombreUsuario
@@ -67,7 +59,6 @@ class ComprobantePagoDiarioActivity : AppCompatActivity() {
         tvCuotas.text = if (metodoPago == "TARJETA") "Cuotas: $cuotas" else ""
         tvMonto.text = "$ ${"%.2f".format(monto)}"
 
-        // --- Asignar la fecha CORREGIDA a emisión y vencimiento ---
         tvFechaEmision.text = fechaFormateadaParaMostrar
         tvVencimiento.text = fechaFormateadaParaMostrar
 

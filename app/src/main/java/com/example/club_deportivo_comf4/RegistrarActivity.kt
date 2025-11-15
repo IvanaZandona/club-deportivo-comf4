@@ -77,9 +77,8 @@ class RegistrarActivity : AppCompatActivity() {
         // instancia de la BD
         val db = DBHelper(this)
 
-        // ---------------------------------------------------------
         //  Botón Agregar SOCIO
-        // ---------------------------------------------------------
+
         btnAgregarSocio.setOnClickListener {
 
             val nombre = inputNombre.text.toString().trim()
@@ -126,9 +125,7 @@ class RegistrarActivity : AppCompatActivity() {
             }
         }
 
-        // ---------------------------------------------------------
         // Botón Agregar NO SOCIO
-        // ---------------------------------------------------------
         btnAgregarNoSocio.setOnClickListener {
 
             val nombre = inputNombre.text.toString().trim()

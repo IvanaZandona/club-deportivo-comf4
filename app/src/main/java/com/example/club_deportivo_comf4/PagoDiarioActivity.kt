@@ -104,34 +104,29 @@ class PagoDiarioActivity : AppCompatActivity() {
             return
         }
 
-        // 3. BÚSQUEDA ÚNICA: Obtenemos el objeto 'NoSocio' completo una sola vez.
-        // Esto es como el "supermercado": traemos toda la información en un solo viaje.
+        // 3.  Obtenemos el objeto 'NoSocio' completo una sola vez.
         val noSocio = dbHelper.obtenerNoSocioPorDNI(dni)
 
-        // 4. VALIDACIÓN CENTRAL: Si la búsqueda no devuelve nada, el no socio no existe.
+        // 4. Si la búsqueda no devuelve nada, el no socio no existe.
         if (noSocio == null) {
             Toast.makeText(this, "No se encontró un no socio registrado con ese DNI", Toast.LENGTH_SHORT).show()
             inputDNI.error = "No socio no encontrado"
             return // Detenemos todo el proceso.
         }
 
-        // 5. OBTENCIÓN DE LA FECHA: Usamos la 'fechaRegistro' que vino en el objeto 'noSocio'.
-        // Esta es la lógica clave que querías: usar la fecha asociada al usuario, no la del sistema.
         val fechaDePago = noSocio.fechaRegistro
         val cuotasSeleccionadas = if (metodoPago == "TARJETA") spinnerCuotas.selectedItem.toString() else "1"
 
-        // 6. REGISTRO EN BD: Llamamos a la función que guarda el pago.
-        // Le pasamos la 'fechaDePago' que acabamos de obtener.
+
         val idTransaccion = dbHelper.registrarPagoNoSocio(
             dni = dni,
             monto = monto,
             metodoPago = metodoPago,
             cuotas = cuotasSeleccionadas.toInt(),
             nombreActividad = actividadSeleccionada,
-            fechaDePago = fechaDePago // <-- Usando la fecha del no socio.
+            fechaDePago = fechaDePago //
         )
 
-        // 7. COMPROBANTE: Si el registro fue exitoso, preparamos y mostramos el comprobante.
         if (idTransaccion > -1L) {
             Toast.makeText(this, "Pago registrado correctamente", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, ComprobantePagoDiarioActivity::class.java).apply {

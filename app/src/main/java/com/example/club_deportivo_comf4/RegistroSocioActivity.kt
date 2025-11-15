@@ -69,7 +69,6 @@ class RegistroSocioActivity : AppCompatActivity() {
         }
 
         // Instancia de base de datos y obtención de id del usuario
-        // ------------------------------------------------------------
         val db = DBHelper(this)
         val idUsuario = intent.getLongExtra("id_usuario", -1)
 

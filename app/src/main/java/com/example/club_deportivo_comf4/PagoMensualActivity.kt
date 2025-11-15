@@ -28,7 +28,7 @@ class PagoMensualActivity : AppCompatActivity() {
         spinnerCuotas.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, cuotas)
         spinnerCuotas.isEnabled = false
 
-        findViewById<LinearLayout>(R.id.btnVolver).setOnClickListener { finish() }
+
         findViewById<ImageView>(R.id.iconoVolver).setOnClickListener { finish() }
 
         val radioGroup = findViewById<RadioGroup>(R.id.radioGroupMetodo)

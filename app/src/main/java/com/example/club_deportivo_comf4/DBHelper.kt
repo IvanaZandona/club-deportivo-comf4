@@ -261,7 +261,7 @@ class DBHelper(private val context: Context) :
         return noSocio
     }
 
-    // CORREGIDO: Método para obtener fecha de alta del socio
+    // Obtener fecha de alta del socio
     fun obtenerFechaAltaSocio(usuarioId: Long): String? {
         val db = readableDatabase
         val cursor = db.rawQuery(
@@ -275,7 +275,7 @@ class DBHelper(private val context: Context) :
         return fechaAlta
     }
 
-    // NUEVO: Método para obtener fecha de registro del no socio
+    // Obtener fecha de registro del no socio
     fun obtenerFechaRegistroNoSocio(usuarioId: Long): String? {
         val db = readableDatabase
         val cursor = db.rawQuery(
@@ -334,14 +334,14 @@ class DBHelper(private val context: Context) :
         return result != -1L
     }
 
-    // CORREGIDO: Método para registrar pago de no socio usando fecha de registro
+    // Registrar pago de no socio usando fecha de registro
     fun registrarPagoNoSocio(
         dni: String,
         monto: Double,
         metodoPago: String,
         cuotas: Int,
         nombreActividad: String,
-        fechaDePago: String  // <- Este es el parámetro que recibimos
+        fechaDePago: String  //
     ): Long {
         val db = writableDatabase
         return try {
@@ -349,7 +349,7 @@ class DBHelper(private val context: Context) :
             val usuarioId = obtenerUsuarioIdPorDNI(dni) ?: throw Exception("Usuario no encontrado con DNI: $dni")
             val actividadId = obtenerActividadIdPorNombre(db, nombreActividad) ?: throw Exception("Actividad no encontrada: $nombreActividad")
 
-            // CORRECCIÓN: Usar fechaDePago en lugar de fechaRegistro
+            // Usar fechaDePago en lugar de fechaRegistro
             if (fechaDePago.isNullOrEmpty()) {
                 throw Exception("Fecha de pago no disponible para el no socio")
             }
@@ -386,7 +386,7 @@ class DBHelper(private val context: Context) :
         }
     }
 
-    // NUEVO: Método para verificar si es socio
+    // Verificar si es socio
     fun esSocio(usuarioId: Long): Boolean {
         val db = readableDatabase
         val cursor = db.rawQuery(
@@ -398,7 +398,7 @@ class DBHelper(private val context: Context) :
         return esSocio
     }
 
-    // NUEVO: Método para verificar si es no socio
+    // Ver si es no socio
     fun esNoSocio(usuarioId: Long): Boolean {
         val db = readableDatabase
         val cursor = db.rawQuery(
@@ -421,7 +421,7 @@ class DBHelper(private val context: Context) :
         val calendar = Calendar.getInstance()
         calendar.set(anio, mes, dia)
 
-        // Sumamos 30 días → 1 mes aproximado
+        // Sumamos 30 días, 1 mes aproximado
         calendar.add(Calendar.DAY_OF_MONTH, 30)
 
         val nuevoAnio = calendar.get(Calendar.YEAR)
