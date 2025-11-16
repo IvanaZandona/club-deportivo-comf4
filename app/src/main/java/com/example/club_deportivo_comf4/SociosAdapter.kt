@@ -6,14 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-// Importa tu paquete R para resolver R.layout.item_socio (si lo renombraste)
+
 
 class SociosAdapter(
     private val listaSocios: MutableList<Socio>,
     private val dbHelper: DBHelper,
-    // Puedes inyectar un listener si quieres manejar clicks en la Activity/Fragment
     private val itemClickListener: (Socio) -> Unit
 ): RecyclerView.Adapter<SociosAdapter.SocioViewHolder>() {
 
@@ -21,9 +22,13 @@ class SociosAdapter(
     // 1. EL VIEWHOLDER (Añade todos los campos del item_socio.xml)
     // ==========================================
     class SocioViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        val cabecera: LinearLayout = view.findViewById(R.id.cabecera)
+        val contenidoDesplegable: LinearLayout = view.findViewById(R.id.contenidoDesplegable)
+        val flechaDesplegable: ImageView = view.findViewById(R.id.flechaDesplegable)
+
         // Textos
         val tvNombrePrincipal: TextView = view.findViewById(R.id.nombrePrincipal)
-        val tvEstado: TextView = view.findViewById(R.id.tvEstado)
         val tvFechaInscripcion: TextView = view.findViewById(R.id.tvFechaInscripcion)
         val tvVencimiento: TextView = view.findViewById(R.id.tvUltimoVencimiento)
         val tvDNI: TextView = view.findViewById(R.id.tvDNI)
@@ -55,21 +60,30 @@ class SociosAdapter(
         // Rellenar la tarjeta
 
         holder.tvNombrePrincipal.text = "${socioActual.nombre} ${socioActual.apellido}"
-        holder.tvEstado.text = "estado"
         holder.tvFechaInscripcion.text = socioActual.fechaInscripcion
         "14/05/25".also { holder.tvVencimiento.text = it }
         holder.tvDNI.text = socioActual.dni
         holder.tvEmail.text = socioActual.email
         holder.tvTelefono.text = socioActual.telefono
 
-        // Lógica de color de estado (Mejora visual)
-    /*    if (socioActual.estado == "Vencido") {
-            holder.tvEstado.setTextColor(Color.RED)
-            // holder.tvEstado.setBackgroundResource(R.drawable.bg_estado_vencido) // Si tienes un drawable rojo
-        } else {
-            holder.tvEstado.setTextColor(Color.parseColor("#00CC00")) // Color verde
-            // holder.tvEstado.setBackgroundResource(R.drawable.bg_estado_activo) // Si tienes un drawable verde
-        }*/
+
+
+        // Estado inicial: contenido oculto
+        holder.contenidoDesplegable.visibility = View.GONE
+        holder.flechaDesplegable.rotation = 0f
+        holder.cabecera.setOnClickListener {
+            val isVisible = holder.contenidoDesplegable.visibility == View.VISIBLE
+
+            if (isVisible) {
+                // Contraer
+                holder.contenidoDesplegable.visibility = View.GONE
+                holder.flechaDesplegable.rotation = 0f
+            } else {
+                // Expandir
+                holder.contenidoDesplegable.visibility = View.VISIBLE
+                holder.flechaDesplegable.rotation = 180f
+            }
+        }
 
         // --- MANEJO DE EVENTOS ---
 
