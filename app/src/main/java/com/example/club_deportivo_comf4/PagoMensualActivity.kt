@@ -125,8 +125,6 @@ class PagoMensualActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Error al registrar el pago", Toast.LENGTH_SHORT).show()
         }
-
-
     }
 
     override fun onDestroy() {

@@ -21,14 +21,8 @@ class ListaSociosActivity : AppCompatActivity() {
 
         // Inicializar DBHelper
         dbHelper = DBHelper(this)
-
-        // Configurar RecyclerView
         configurarRecyclerView()
-
-        // Cargar datos
         cargarSocios()
-
-        // Configurar botones
         configurarBotones()
     }
 
@@ -50,13 +44,9 @@ class ListaSociosActivity : AppCompatActivity() {
     }
 
     private fun cargarSocios() {
-        // Obtener fecha actual para el cálculo de estados
+
         val hoy = dbHelper.fechaActual()
-
-        // Obtener todos los socios desde la base de datos
         val sociosDesdeDB = dbHelper.obtenerTodosLosSocios(hoy)
-
-        // Log para debug
         Log.d("ListaSocios", "Socios encontrados: ${sociosDesdeDB.size}")
 
         // Actualizar la lista

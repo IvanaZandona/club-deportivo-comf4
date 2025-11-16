@@ -6,6 +6,10 @@
     android:padding="8dp"
     android:background="@drawable/fila_borde">
 
+
+
+
+    <!-- Columna Nombre -->
     <TextView
         android:id="@+id/tvNombre"
         android:layout_width="0dp"
@@ -15,6 +19,7 @@
         android:textSize="12sp"
         android:textColor="@android:color/black" />
 
+    <!-- Columna DNI -->
     <TextView
         android:id="@+id/tvDni"
         android:layout_width="0dp"
@@ -24,6 +29,7 @@
         android:textSize="12sp"
         android:textColor="@android:color/black" />
 
+    <!-- Columna Fecha Alta -->
     <TextView
         android:id="@+id/tvFechaAlta"
         android:layout_width="0dp"
@@ -33,6 +39,7 @@
         android:textSize="12sp"
         android:textColor="@android:color/black" />
 
+    <!-- Columna Vencimiento -->
     <TextView
         android:id="@+id/tvVencimiento"
         android:layout_width="0dp"
@@ -41,5 +48,16 @@
         android:text="Vto"
         android:textSize="12sp"
         android:textColor="@android:color/black" />
+
+    <!-- Icono Email -->
+    <ImageView
+        android:id="@+id/ivEmail"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/baseline_attach_email_24"
+        android:contentDescription="Enviar email"
+        android:tint="@color/colorRojo" />
 
 </LinearLayout>

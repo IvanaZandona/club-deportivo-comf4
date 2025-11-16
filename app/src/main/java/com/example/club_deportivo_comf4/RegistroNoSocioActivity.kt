@@ -40,14 +40,14 @@ class RegistroNoSocioActivity : AppCompatActivity() {
 
         btnPagos.isEnabled = false // deshabilitado hasta registrar
 
-        // --- Botón atrás ---
+        // Botón atrás
         botonAtras.setOnClickListener {
             val intent = Intent(this, RegistrarActivity::class.java)
             startActivity(intent)
-            finish() // opcional: cierra esta actividad para que no quede en el back stack
+            finish() //
         }
 
-        // --- EditText con calendario ---
+        //  EditText con calendario
         inputFecha.setOnClickListener {
             val calendario = Calendar.getInstance()
             val año = calendario.get(Calendar.YEAR)
@@ -65,7 +65,7 @@ class RegistroNoSocioActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        // --- Obtener ID del usuario ---
+        // Obtener ID del usuario
         val db = DBHelper(this)
         val idUsuario = intent.getLongExtra("id_usuario", -1)
 
@@ -75,7 +75,7 @@ class RegistroNoSocioActivity : AppCompatActivity() {
             return
         }
 
-        // --- Botón registrar No Socio ---
+        //  Botón registrar No Socio
         btnAgregarNoSocio.setOnClickListener {
             val fecha = inputFecha.text.toString().trim()
 
@@ -97,12 +97,12 @@ class RegistroNoSocioActivity : AppCompatActivity() {
 
         }
 
-        // --- botón limpiar ---
+        //  botón limpiar
         btnLimpiar.setOnClickListener {
             inputFecha.setText("")
         }
 
-        // --- botón ir a pago diario ---
+        //  botón ir a pago diario
         btnPagos.setOnClickListener {
             if (!noSocioRegistrado) {
                 Toast.makeText(this, "Primero registrá al no socio", Toast.LENGTH_SHORT).show()
@@ -116,7 +116,7 @@ class RegistroNoSocioActivity : AppCompatActivity() {
 
     }
 
-    // Función para mostrar alerta personalizada con bordes redondeados
+    // Mostrar alerta personalizada con bordes redondeados
     private fun mostrarAlertaPersonalizada(mensaje: String) {
         val dialogView = layoutInflater.inflate(R.layout.custom_alerta, null)
         val tvMensaje = dialogView.findViewById<TextView>(R.id.tvMensaje)

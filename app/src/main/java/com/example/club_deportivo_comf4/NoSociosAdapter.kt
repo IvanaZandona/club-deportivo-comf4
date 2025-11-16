@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -14,13 +16,14 @@ class NoSociosAdapter(
     private val itemClickListener: (NoSocio) -> Unit
 ) : RecyclerView.Adapter<NoSociosAdapter.NoSocioViewHolder>() {
 
-    // ============================================================
-    // 1. VIEWHOLDER (usa los IDs del layout tarjeta_usuario.xml)
-    // ============================================================
+
     class NoSocioViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val tvNombrePrincipal: TextView = view.findViewById(R.id.nombrePrincipal)
+        val cabecera: LinearLayout = view.findViewById(R.id.cabecera)
+        val contenidoDesplegable: LinearLayout = view.findViewById(R.id.contenidoDesplegable)
+        val flechaDesplegable: ImageView = view.findViewById(R.id.flechaDesplegable)
 
+        val tvNombrePrincipal: TextView = view.findViewById(R.id.nombrePrincipal)
         val tvFechaInscripcion: TextView = view.findViewById(R.id.tvFechaInscripcion)
         val tvVencimiento: TextView = view.findViewById(R.id.tvUltimoVencimiento)
         val tvDNI: TextView = view.findViewById(R.id.tvDNI)
@@ -32,72 +35,68 @@ class NoSociosAdapter(
         val btnBorrar: ImageButton = view.findViewById(R.id.btnBorrar)
     }
 
-    // ============================================================
-    // 2. CREAR VIEWHOLDER
-    // ============================================================
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoSocioViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.tarjeta_usuario, parent, false)
-
         return NoSocioViewHolder(view)
     }
 
-    // ============================================================
-    // 3. VINCULAR DATOS A LA TARJETA
-    // ============================================================
     override fun onBindViewHolder(holder: NoSocioViewHolder, position: Int) {
         val noSocio = listaNoSocios[position]
         val context = holder.itemView.context
 
-        // Datos reales
+        // Rellenar datos
         holder.tvNombrePrincipal.text = "${noSocio.nombre} ${noSocio.apellido}"
         holder.tvFechaInscripcion.text = noSocio.fechaRegistro
-        holder.tvVencimiento.text = "—" // No socios no tienen vencimiento
+        holder.tvVencimiento.text = "—"
         holder.tvDNI.text = noSocio.dni
         holder.tvEmail.text = noSocio.email
         holder.tvTelefono.text = noSocio.telefono
 
-        // Click item
+        // --- DESPLEGABLE ---
+        holder.contenidoDesplegable.visibility = View.GONE
+        holder.flechaDesplegable.rotation = 0f
+        holder.cabecera.setOnClickListener {
+            val isVisible = holder.contenidoDesplegable.visibility == View.VISIBLE
+            if (isVisible) {
+                holder.contenidoDesplegable.visibility = View.GONE
+                holder.flechaDesplegable.rotation = 0f
+            } else {
+                holder.contenidoDesplegable.visibility = View.VISIBLE
+                holder.flechaDesplegable.rotation = 180f
+            }
+        }
+
+        // Click en la tarjeta
         holder.itemView.setOnClickListener {
             itemClickListener(noSocio)
         }
 
-        // BORRAR NO SOCIO
+        // Botón Borrar
         holder.btnBorrar.setOnClickListener {
             AlertDialog.Builder(context)
                 .setTitle("Eliminar No Socio")
                 .setMessage("¿Desea eliminar a ${noSocio.nombre}?")
                 .setPositiveButton("Sí") { _, _ ->
-
-                    // ⚠️ DEBE EXISTIR eliminarNoSocio()
                     if (dbHelper.eliminarNoSocio(noSocio.dni)) {
                         listaNoSocios.removeAt(position)
                         notifyItemRemoved(position)
                     }
-
                 }
                 .setNegativeButton("No", null)
                 .show()
         }
 
-        // Botón Editar (opcional)
+        // Otros botones (editar e imprimir)
         holder.btnEditar.setOnClickListener {
-            // futura lógica
         }
 
         holder.btnImprimirCarnet.setOnClickListener {
-            // futura lógica
         }
     }
 
-    // ============================================================
-    // 4. TAMAÑO DE LA LISTA
-    // ============================================================
     override fun getItemCount(): Int = listaNoSocios.size
 
-    // ============================================================
-    // 5. Actualizar lista completa
-    // ============================================================
     fun actualizarLista(nuevaLista: List<NoSocio>) {
         listaNoSocios.clear()
         listaNoSocios.addAll(nuevaLista)

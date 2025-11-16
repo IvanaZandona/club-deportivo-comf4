@@ -18,9 +18,6 @@ class SociosAdapter(
     private val itemClickListener: (Socio) -> Unit
 ): RecyclerView.Adapter<SociosAdapter.SocioViewHolder>() {
 
-    // ==========================================
-    // 1. EL VIEWHOLDER (Añade todos los campos del item_socio.xml)
-    // ==========================================
     class SocioViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val cabecera: LinearLayout = view.findViewById(R.id.cabecera)
@@ -42,24 +39,19 @@ class SociosAdapter(
         val btnBorrar: ImageButton = view.findViewById(R.id.btnBorrar)
     }
 
-    // ==========================================
-    // 2. CREAR VIEWHOLDER
-    // ==========================================
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SocioViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.tarjeta_usuario, parent, false) // ⬅️ Usamos item_socio.xml
         return SocioViewHolder(view)
     }
 
-    // ==========================================
-    // 3. ENLAZAR DATOS Y LÓGICA DE BOTONES
-    // ==========================================
+
     override fun onBindViewHolder(holder: SocioViewHolder, position: Int) {
         val socioActual = listaSocios[position]
-        val context = holder.itemView.context // Acceso al contexto
+        val context = holder.itemView.context
 
         // Rellenar la tarjeta
-
         holder.tvNombrePrincipal.text = "${socioActual.nombre} ${socioActual.apellido}"
 
         holder.tvFechaInscripcion.text = socioActual.fechaInscripcion
@@ -77,17 +69,15 @@ class SociosAdapter(
             val isVisible = holder.contenidoDesplegable.visibility == View.VISIBLE
 
             if (isVisible) {
-                // Contraer
+
                 holder.contenidoDesplegable.visibility = View.GONE
                 holder.flechaDesplegable.rotation = 0f
             } else {
-                // Expandir
+
                 holder.contenidoDesplegable.visibility = View.VISIBLE
                 holder.flechaDesplegable.rotation = 180f
             }
         }
-
-        // --- MANEJO DE EVENTOS ---
 
         // Click en la tarjeta
         holder.itemView.setOnClickListener {
@@ -113,17 +103,13 @@ class SociosAdapter(
 
         // Otros botones (Editar, Imprimir)
         holder.btnEditar.setOnClickListener {
-            // Lógica para abrir la pantalla de edición
         }
 
         holder.btnImprimirCarnet.setOnClickListener {
-            // Lógica para imprimir (mostrar diálogo, etc.)
         }
     }
 
-    // ==========================================
-    // 4. CONTADOR Y ACTUALIZACIÓN
-    // ==========================================
+
     override fun getItemCount(): Int {
         return listaSocios.size
     }

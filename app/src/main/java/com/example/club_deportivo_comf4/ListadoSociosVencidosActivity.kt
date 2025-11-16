@@ -27,7 +27,6 @@ class ListadoSociosVencidosActivity : AppCompatActivity() {
         // Configurar RecyclerView
         recycler.layoutManager = LinearLayoutManager(this)
 
-        // Cargar datos
         cargarSociosVencidos()
 
         // Botón volver

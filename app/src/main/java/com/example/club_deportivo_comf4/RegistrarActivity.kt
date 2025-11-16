@@ -34,9 +34,9 @@ class RegistrarActivity : AppCompatActivity() {
         val inputEmail = findViewById<EditText>(R.id.inputCorreo)
         val radioGenero = findViewById<RadioGroup>(R.id.radioGenero)
 
-        // --- MODIFICACIÓN CLAVE: Evita que se pueda escribir en el campo de fecha ---
+        // Evita que se pueda escribir en el campo de fecha -
         inputFechaNac.isFocusable = false
-        inputFechaNac.isClickable = true // Asegura que siga siendo clickeable para abrir el diálogo
+        inputFechaNac.isClickable = true
 
         // botones
         val btnLimpiar = findViewById<Button>(R.id.btnLimpiar)
@@ -50,7 +50,6 @@ class RegistrarActivity : AppCompatActivity() {
             finish()
         }
 
-        // --- EditText con calendario ---
         inputFechaNac.setOnClickListener {
             val calendario = Calendar.getInstance()
             val año = calendario.get(Calendar.YEAR)
@@ -66,7 +65,7 @@ class RegistrarActivity : AppCompatActivity() {
                 año, mes, dia
             )
 
-            // Mejora: Evita que se puedan seleccionar fechas futuras como fecha de nacimiento.
+            //Evita que se puedan seleccionar fechas futuras como fecha de nacimiento
             datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
             datePickerDialog.show()
         }
@@ -85,9 +84,6 @@ class RegistrarActivity : AppCompatActivity() {
         // instancia de la BD
         val db = DBHelper(this)
 
-        // ---------------------------------------------------------
-        //  Botón Agregar SOCIO
-        // ---------------------------------------------------------
         btnAgregarSocio.setOnClickListener {
 
             val nombre = inputNombre.text.toString().trim()
@@ -108,13 +104,13 @@ class RegistrarActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // --- VALIDACIÓN: Formato de Email ---
+            // VALIDACIÓN: Formato de Email
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 Toast.makeText(this, "El formato del correo electrónico no es válido", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // --- validar largo del DNI ---
+            // validar largo del DNI
             if (dni.length != 8) {
                 Toast.makeText(this, "El DNI debe tener exactamente 8 dígitos", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -125,13 +121,12 @@ class RegistrarActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Insertamos usuario tipo 1 = Socio
+
             val idUsuario = db.insertarUsuario(nombre, apellido, dni, fechaNac, telefono, email, 1)
 
             if (idUsuario > 0) {
                 Toast.makeText(this, "Usuario registrado. Continuá con los datos de SOCIO", Toast.LENGTH_SHORT).show()
 
-                // Vamos a pantalla de socio con ID del usuario
                 val intent = Intent(this, RegistroSocioActivity::class.java)
                 intent.putExtra("id_usuario", idUsuario)
                 startActivity(intent)
@@ -140,9 +135,6 @@ class RegistrarActivity : AppCompatActivity() {
             }
         }
 
-        // ---------------------------------------------------------
-        // Botón Agregar NO SOCIO
-        // ---------------------------------------------------------
         btnAgregarNoSocio.setOnClickListener {
 
             val nombre = inputNombre.text.toString().trim()
@@ -152,7 +144,7 @@ class RegistrarActivity : AppCompatActivity() {
             val telefono = inputTelefono.text.toString().trim()
             val email = inputEmail.text.toString().trim()
 
-            // --- CORRECCIÓN AÑADIDA: Inicialización y validación de la variable de género ---
+
             val generoSeleccionado = radioGenero.checkedRadioButtonId
             if (generoSeleccionado == -1) {
                 Toast.makeText(this, "Seleccioná un género", Toast.LENGTH_SHORT).show()
@@ -164,13 +156,13 @@ class RegistrarActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // --- VALIDACIÓN: Formato de Email ---
+
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 Toast.makeText(this, "El formato del correo electrónico no es válido", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // --- validar largo del DNI ---
+
             if (dni.length != 8) {
                 Toast.makeText(this, "El DNI debe tener exactamente 8 dígitos", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -181,7 +173,7 @@ class RegistrarActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // insertamos usuario tipo 2 = No Socio
+
             val idUsuario = db.insertarUsuario(nombre, apellido, dni, fechaNac, telefono, email, 2)
 
             if (idUsuario > 0) {

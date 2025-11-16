@@ -35,16 +35,14 @@ class ComprobantePagoMensualActivity : AppCompatActivity() {
         val cuotas = intent.getStringExtra("cuotas") ?: "1"
         val monto = intent.getDoubleExtra("monto", 0.0)
 
-        // Fecha del pago
         val fechaPago = intent.getStringExtra("fechaPago") ?: ""
 
-        // Fecha de alta del socio (DEBÉS PASARLA POR INTENT)
         val fechaAlta = intent.getStringExtra("fechaAlta") ?: ""
 
         val sdfOriginal = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val sdfMostrar = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
-        // Convertir fecha de pago a formato amigable
+        // Convertir fecha de pago
         val fechaPagoStr = try {
             val date = sdfOriginal.parse(fechaPago)
             sdfMostrar.format(date!!)

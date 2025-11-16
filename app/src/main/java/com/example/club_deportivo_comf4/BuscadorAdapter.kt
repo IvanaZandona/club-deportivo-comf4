@@ -48,8 +48,8 @@ class BuscadorAdapter(
 
     override fun getItemCount(): Int = lista.size
 
-    fun actualizarLista(nuevaLista: MutableList<Usuario>) {
+   /* fun actualizarLista(nuevaLista: MutableList<Usuario>) {
         lista = nuevaLista
         notifyDataSetChanged()
-    }
+    }*/
 }

@@ -43,14 +43,14 @@ class RegistroSocioActivity : AppCompatActivity() {
         // deshabilitar el botón “Ir a pagos” hasta guardar socio
         btnPagos.isEnabled = false
 
-        // --- Botón atrás ---
+        //  Botón atrás
         btnAtras.setOnClickListener {
             val intent = Intent(this, RegistrarActivity::class.java)
             startActivity(intent)
             finish() // opcional: cierra esta actividad
         }
 
-        // --- EditText con calendario ---
+
         inputFecha.setOnClickListener {
             val calendario = Calendar.getInstance()
             val año = calendario.get(Calendar.YEAR)
@@ -78,7 +78,7 @@ class RegistroSocioActivity : AppCompatActivity() {
             return
         }
 
-        // --- Botón Agregar Socio con alerta personalizada ---
+        // Botón Agregar Socio con alerta personalizada -
 
         btnAgregarSocio.setOnClickListener {
             val fechaInscripcion = inputFecha.text.toString().trim()
@@ -130,7 +130,7 @@ class RegistroSocioActivity : AppCompatActivity() {
 
     }
 
-    // Función para mostrar alerta personalizada con bordes redondeados
+    // mostrar alerta personalizada con bordes redondeados
     private fun mostrarAlertaPersonalizada(mensaje: String) {
         val dialogView = layoutInflater.inflate(R.layout.custom_alerta, null)
         val tvMensaje = dialogView.findViewById<TextView>(R.id.tvMensaje)

@@ -26,7 +26,7 @@ class CarnetActivity : AppCompatActivity() {
         volverAtras.setOnClickListener {
             val intent = Intent(this, MenuActivity::class.java)
             startActivity(intent)
-            finish() // Opcional: cierra esta Activity para no volver con el botón atrás
+            finish()
         }
     }
 }

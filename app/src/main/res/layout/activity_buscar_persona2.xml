@@ -66,231 +66,58 @@
             android:id="@+id/btnBuscar"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:tint="@color/black"
             android:src="@drawable/ic_buscar" />
     </LinearLayout>
-
 
     <!-- TARJETA DE USUARIO -->
     <LinearLayout
         android:id="@+id/cardUsuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@drawable/bg_user_card"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="@drawable/bg_card_white"
+        android:visibility="gone"
+        android:elevation="6dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp">
 
-        <!-- Encabezado -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/nombreUsuario"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:text="Nombre del usuario"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/nunito_regular"/>
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/avatar_circle"
-                android:scaleType="centerCrop"
-                android:src="@drawable/avatar_img" />
-
-            <TextView
-                android:id="@+id/tvNombre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/nunito_bold"
-                android:text="Rocio Cejas"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <!-- Separador -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginVertical="8dp"
-            android:background="@android:color/darker_gray" />
-
-        <!-- Estado -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/dniUsuario"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/nunito_bold"
-                android:text="@string/estado"
-                android:textColor="@android:color/black" />
-
-            <TextView
-                android:id="@+id/tvEstado"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_estado"
-                android:fontFamily="@font/nunito_bold"
-                android:padding="6dp"
-                android:text="Inactivo"
-                android:textColor="@android:color/black" />
-        </LinearLayout>
-
-        <!-- Fecha inscripción -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/nunito_light"
-                android:text="Fecha Inscripción"
-                android:textColor="@android:color/black" />
-
-            <TextView
-                android:id="@+id/tvFechaInscripcion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/nunito_light"
-                android:text="14/04/25"
-                android:textColor="@android:color/black" />
-        </LinearLayout>
-
-        <!-- Último vencimiento -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/nunito_light"
-                android:text="Último vencimiento"
-                android:textColor="@android:color/black" />
-
-            <TextView
-                android:id="@+id/tvUltimoVencimiento"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="14/05/25"
-                android:fontFamily="@font/nunito_light"
-                android:textColor="@android:color/black" />
-        </LinearLayout>
-
-        <!-- DNI -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/nunito_light"
-                android:text="DNI"
-                android:textColor="@android:color/black" />
-
-            <TextView
-                android:id="@+id/tvDNI"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/nunito_light"
-                android:text="358048759"
-                android:textColor="@android:color/black" />
-        </LinearLayout>
-
-        <!-- Email -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Email"
-                android:textColor="@android:color/black" />
-
-            <TextView
-                android:id="@+id/tvEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/nunito_light"
-                android:text="mail@mail.com"
-                android:textColor="@android:color/black" />
-        </LinearLayout>
-
-        <!-- Teléfono -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/nunito_light"
-                android:text="Teléfono"
-                android:textColor="@android:color/black" />
-
-            <TextView
-                android:id="@+id/tvTelefono"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/nunito_light"
-                android:text="34150385447"
-                android:textColor="@android:color/black" />
-        </LinearLayout>
-
-        <!-- Botones de acción -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="end"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/btnEditar"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="4dp"
-                android:src="@drawable/ic_edit"
-                app:tint="@color/cardview_dark_background" />
-
-            <ImageButton
-                android:id="@+id/btnImprimirCarnet"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="4dp"
-                android:src="@drawable/ic_impresora"
-                app:tint="@color/cardview_dark_background" />
-
-            <ImageButton
-                android:id="@+id/btnBorrar"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="4dp"
-                android:src="@drawable/ic_delete"
-                app:tint="@color/cardview_dark_background" />
-        </LinearLayout>
-
+            android:text="DNI del usuario"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/nunito_regular"/>
     </LinearLayout>
 
-    <!-- Espaciador -->
+    <!-- Icono inicial (se puede mantener como imagen de fondo) -->
+    <ImageView
+        android:id="@+id/imgInicial"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/ic_buscarusser"
+        android:tint="@color/colorRojoApagado"
+        android:alpha="0.4"
+        android:contentDescription="Icono inicial"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
