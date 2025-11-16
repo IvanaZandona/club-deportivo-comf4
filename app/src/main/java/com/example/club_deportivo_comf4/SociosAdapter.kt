@@ -23,7 +23,7 @@ class SociosAdapter(
     class SocioViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         // Textos
         val tvNombrePrincipal: TextView = view.findViewById(R.id.nombrePrincipal)
-        val tvEstado: TextView = view.findViewById(R.id.tvEstado)
+
         val tvFechaInscripcion: TextView = view.findViewById(R.id.tvFechaInscripcion)
         val tvVencimiento: TextView = view.findViewById(R.id.tvUltimoVencimiento)
         val tvDNI: TextView = view.findViewById(R.id.tvDNI)
@@ -55,7 +55,7 @@ class SociosAdapter(
         // Rellenar la tarjeta
 
         holder.tvNombrePrincipal.text = "${socioActual.nombre} ${socioActual.apellido}"
-        holder.tvEstado.text = "estado"
+
         holder.tvFechaInscripcion.text = socioActual.fechaInscripcion
         "14/05/25".also { holder.tvVencimiento.text = it }
         holder.tvDNI.text = socioActual.dni

@@ -2,39 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:background="#121212" android:id="@+id/main"
-    android:gravity="center_horizontal"
+    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="#121212">
 
-
-    <!-- Flecha y título -->
+    <!-- Flecha atrás -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-
         <ImageButton
             android:id="@+id/boton_flecha_atras"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_gravity="start"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:background="@android:color/transparent"
             android:importantForAccessibility="no"
-            android:src="@drawable/boton_flecha_atras"/>
-
-
+            android:src="@drawable/boton_flecha_atras" />
     </LinearLayout>
 
-
-    <!-- Campo de búsqueda -->
-
-
+    <!-- Título -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,7 +40,7 @@
         android:textSize="32sp"
         android:textStyle="bold" />
 
-
+    <!-- Campo de búsqueda -->
     <LinearLayout
         android:layout_width="333dp"
         android:layout_height="wrap_content"
@@ -57,7 +50,6 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="8dp">
-
 
         <EditText
             android:id="@+id/edtBuscarDni"
@@ -70,31 +62,30 @@
             android:textColor="@color/colorGrisOscuro"
             android:textColorHint="#AAAAAA" />
 
-
         <ImageView
+            android:id="@+id/btnBuscar"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_buscar"
-            />
+            android:src="@drawable/ic_buscar" />
     </LinearLayout>
 
 
-    <!-- Contenedor cards -->
+    <!-- TARJETA DE USUARIO -->
     <LinearLayout
+        android:id="@+id/cardUsuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_marginBottom="16dp"
         android:background="@drawable/bg_user_card"
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Encabezado: Avatar + Nombre -->
+        <!-- Encabezado -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <ImageView
                 android:layout_width="50dp"
@@ -122,7 +113,7 @@
             android:layout_marginVertical="8dp"
             android:background="@android:color/darker_gray" />
 
-        <!-- Fila de datos: Estado -->
+        <!-- Estado -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,6 +128,7 @@
                 android:textColor="@android:color/black" />
 
             <TextView
+                android:id="@+id/tvEstado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_estado"
@@ -146,7 +138,7 @@
                 android:textColor="@android:color/black" />
         </LinearLayout>
 
-        <!-- Fila de datos: Fecha Inscripción -->
+        <!-- Fecha inscripción -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -161,6 +153,7 @@
                 android:textColor="@android:color/black" />
 
             <TextView
+                android:id="@+id/tvFechaInscripcion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_light"
@@ -168,7 +161,7 @@
                 android:textColor="@android:color/black" />
         </LinearLayout>
 
-        <!-- Fila de datos: Último vencimiento -->
+        <!-- Último vencimiento -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -183,14 +176,15 @@
                 android:textColor="@android:color/black" />
 
             <TextView
+                android:id="@+id/tvUltimoVencimiento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/nunito_light"
                 android:text="14/05/25"
+                android:fontFamily="@font/nunito_light"
                 android:textColor="@android:color/black" />
         </LinearLayout>
 
-        <!-- Fila de datos: DNI -->
+        <!-- DNI -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -205,6 +199,7 @@
                 android:textColor="@android:color/black" />
 
             <TextView
+                android:id="@+id/tvDNI"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_light"
@@ -212,7 +207,7 @@
                 android:textColor="@android:color/black" />
         </LinearLayout>
 
-        <!-- Fila de datos: Email -->
+        <!-- Email -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -226,6 +221,7 @@
                 android:textColor="@android:color/black" />
 
             <TextView
+                android:id="@+id/tvEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_light"
@@ -233,29 +229,30 @@
                 android:textColor="@android:color/black" />
         </LinearLayout>
 
-        <!-- Fila de datos: Teléfono -->
+        <!-- Teléfono -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/nunito_light"
                 android:text="Teléfono"
                 android:textColor="@android:color/black" />
 
             <TextView
+                android:id="@+id/tvTelefono"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_light"
                 android:text="34150385447"
                 android:textColor="@android:color/black" />
-
         </LinearLayout>
 
+        <!-- Botones de acción -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -263,13 +260,11 @@
             android:gravity="end"
             android:orientation="horizontal">
 
-            <!-- Icono Editar -->
             <ImageButton
                 android:id="@+id/btnEditar"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Edit"
                 android:padding="4dp"
                 android:src="@drawable/ic_edit"
                 app:tint="@color/cardview_dark_background" />
@@ -279,54 +274,43 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Edit"
                 android:padding="4dp"
                 android:src="@drawable/ic_impresora"
                 app:tint="@color/cardview_dark_background" />
 
-            <!-- Icono Borrar -->
             <ImageButton
                 android:id="@+id/btnBorrar"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="delete"
                 android:padding="4dp"
                 android:src="@drawable/ic_delete"
                 app:tint="@color/cardview_dark_background" />
-
-
         </LinearLayout>
 
     </LinearLayout>
-    <!-- ESPACIADOR para empujar el contenido inferior -->
+
+    <!-- Espaciador -->
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <!-- btn volver -->
+    <!-- Botón Volver -->
     <Button
         android:id="@+id/btnVolver"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         android:background="@drawable/btn_borde_rojo"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
         android:padding="12dp"
         android:text="@string/volver"
         android:textColor="@android:color/white"
         android:textSize="20sp" />
 
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_gravity="bottom"
         android:layout_marginTop="12dp"
         android:scaleType="fitXY"
         android:src="@drawable/bg_rectangulo" />

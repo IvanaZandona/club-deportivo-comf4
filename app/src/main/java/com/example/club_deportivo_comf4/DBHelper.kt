@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import java.util.Calendar
 
-class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 15) {
+class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 16) {
 
     override fun onConfigure(db: SQLiteDatabase) {
         super.onConfigure(db)
@@ -296,6 +296,9 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         return pagoId
     }
 
+
+
+    //Esto es para filtrar todos los socios vencidos, para la lista de socios vencidos
     fun obtenerSociosVencidos(): List<SocioVencido> {
         val lista = mutableListOf<SocioVencido>()
         val hoy = fechaHoyString()
@@ -333,10 +336,12 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
             }
         }
 
-        cursor.close()
+        //cursor.close()
         return lista
     }
 
+
+    //Esto es para filtrar todos los socios, para la lista de socios
     fun obtenerTodosLosSocios(hoy: String): List<Socio> {
         val lista = mutableListOf<Socio>()
         val db = readableDatabase
@@ -378,6 +383,48 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         }
         cursor.close()
         return lista
+
+
+    }
+
+
+    //Esto es para el boton de eliminar la card de no socios
+    fun eliminarNoSocio(dni: String): Boolean {
+        val db = writableDatabase
+        return db.delete("NoSocios", "dni=?", arrayOf(dni)) > 0
+    }
+
+     //Esto es para filtrar todos los no socios, para la lista de no socios
+
+    fun obtenerTodosLosNoSocios(): List<NoSocio> {
+        val lista = mutableListOf<NoSocio>()
+        val db = readableDatabase
+        val query = """
+        SELECT u.id, u.nombre, u.apellido, u.dni, u.email, u.telefono, ns.fecha_registro
+        FROM usuarios u
+        INNER JOIN no_socios ns ON u.id = ns.usuario_id
+        WHERE u.tipo_usuario = 2
+    """
+        val cursor = db.rawQuery(query, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                lista.add(
+                    NoSocio(
+                        idUsuario = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
+                        nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
+                        apellido = cursor.getString(cursor.getColumnIndexOrThrow("apellido")),
+                        dni = cursor.getString(cursor.getColumnIndexOrThrow("dni")),
+                        email = cursor.getString(cursor.getColumnIndexOrThrow("email")),
+                        telefono = cursor.getString(cursor.getColumnIndexOrThrow("telefono")),
+                        fechaRegistro = cursor.getString(cursor.getColumnIndexOrThrow("fecha_registro"))
+                    )
+                )
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        return lista
     }
 
 
@@ -389,7 +436,55 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
 
             // 1. Obtener usuario_id
             val usuarioId = obtenerUsuarioIdPorDNI(dni) ?: return false
-    // Verificar si un socio está vencido
+
+
+            db.delete("pagos_socios", "usuario_id = ?", arrayOf(usuarioId.toString()))
+            db.delete("socios", "usuario_id = ?", arrayOf(usuarioId.toString()))
+
+
+            val filasEliminadas = db.delete("usuarios", "id = ?", arrayOf(usuarioId.toString()))
+
+            db.setTransactionSuccessful()
+            filasEliminadas > 0
+        } catch (e: Exception) {
+            android.util.Log.e("DBHelper", "Error al eliminar socio: ${e.message}")
+            false
+        } finally {
+            db.endTransaction()
+            db.close()
+        }
+    }
+
+
+    //Obtener usuario por id para el buscador de usuario
+    fun obtenerUsuarioPorId(id: Long): Usuario? {
+        val db = readableDatabase
+
+        val cursor = readableDatabase.rawQuery(
+            "SELECT id, tipo_usuario, nombre, apellido, dni, email, telefono, fecha_nacimiento FROM usuarios WHERE id = ?",
+            arrayOf(id.toString())
+        )
+
+        return cursor.use {
+            if (it.moveToFirst()) {
+                Usuario(
+                    id = it.getLong(0),
+                    tipoUsuario = it.getInt(1),
+                    nombre = it.getString(2),
+                    apellido = it.getString(3),
+                    dni = it.getString(4),
+                    email = it.getString(5),
+                    telefono = it.getString(6),
+                    fechaNacimiento = it.getString(7)
+                )
+            } else null
+        }
+
+    }
+
+
+
+    /*/ Verificar si un socio está vencido
     private fun estaVencido(fechaUltimoPago: String): Boolean {
         return try {
             val calPago = Calendar.getInstance().apply {
@@ -409,9 +504,9 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
             Log.e("DBHelper", "Error verificando vencimiento: $fechaUltimoPago - ${e.message}")
             false
         }
-    }
+    }*/
 
-    //  Calcular próximo vencimiento para mostrar
+    /* Calcular próximo vencimiento para mostrar
     private fun calcularProximoVencimiento(fechaUltimoPago: String): String {
         return try {
             val fechaVencimiento = sumarMes(fechaUltimoPago, 1)
@@ -419,7 +514,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         } catch (e: Exception) {
             "Fecha inválida"
         }
-    }
+    }*/
 
     //  Fecha conversión, esto es porque se usaron diferentes formas de fechas
     private fun convertirFechaParaComparacion(fechaOriginal: String): String? {
@@ -441,22 +536,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
             }
 
 
-            db.delete("pagos_socios", "usuario_id = ?", arrayOf(usuarioId.toString()))
-            db.delete("socios", "usuario_id = ?", arrayOf(usuarioId.toString()))
-
-
-            val filasEliminadas = db.delete("usuarios", "id = ?", arrayOf(usuarioId.toString()))
-
-            db.setTransactionSuccessful()
-            filasEliminadas > 0
-        } catch (e: Exception) {
-            android.util.Log.e("DBHelper", "Error al eliminar socio: ${e.message}")
-            false
-        } finally {
-            db.endTransaction()
-            db.close()
-        }
-    }
             // Si no coincide con ningún formato conocido
             Log.e("DBHelper", "Formato de fecha no reconocido: $fechaOriginal")
             null
@@ -499,15 +578,34 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         return readableDatabase.rawQuery("SELECT * FROM administradores WHERE usuario = ? AND password = ?", arrayOf(usuario, password)).use { it.moveToFirst() }
     }
 
-    fun esSocio(usuarioId: Long): Boolean {
-        return readableDatabase.rawQuery("SELECT id FROM socios WHERE usuario_id = ?", arrayOf(usuarioId.toString())).use { it.count > 0 }
-    }
 
-    fun tienePagosPrevios(usuarioId: Long): Boolean {
+    // --- Añade esta función completa en tu archivo DBHelper.kt ---
+
+
+
+
+    /*fun esSocio(usuarioId: Long): Boolean {
+        return readableDatabase.rawQuery("SELECT id FROM socios WHERE usuario_id = ?", arrayOf(usuarioId.toString())).use { it.count > 0 }
+    }*/
+
+   /* fun tienePagosPrevios(usuarioId: Long): Boolean {
         return readableDatabase.rawQuery("SELECT id FROM pagos WHERE usuario_id = ? LIMIT 1", arrayOf(usuarioId.toString())).use { it.count > 0 }
-    }
+    }*/
 
     fun calcularFechaVencimiento(fechaBase: String): String = sumarMes(fechaBase)
+
+    // FECHA ACTUAL yyyy-MM-dd
+    fun fechaActual(): String {
+        val c = Calendar.getInstance()
+        return String.format(
+            "%04d-%02d-%02d",
+            c.get(Calendar.YEAR),
+            c.get(Calendar.MONTH) + 1,
+            c.get(Calendar.DAY_OF_MONTH)
+        )
+
+
+}
 
 
 }
