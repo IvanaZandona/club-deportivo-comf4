@@ -1,5 +1,6 @@
 package com.example.club_deportivo_comf4
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -22,7 +23,7 @@ class ComprobantePagoDiarioActivity : AppCompatActivity() {
         val tvCuotas = findViewById<TextView>(R.id.cantCuotas)
         val tvMonto = findViewById<TextView>(R.id.montoNro)
         val tvFechaEmision = findViewById<TextView>(R.id.emisionPago)
-        val tvVencimiento = findViewById<TextView>(R.id.vencimientoCuota)
+        //val tvVencimiento = findViewById<TextView>(R.id.vencimientoCuota)
 
         // --- Recibir datos del Intent ---
         val nombreUsuario = intent.getStringExtra("nombreUsuario") ?: "No disponible"
@@ -32,9 +33,7 @@ class ComprobantePagoDiarioActivity : AppCompatActivity() {
         val cuotas = intent.getStringExtra("cuotas") ?: "1"
         val monto = intent.getDoubleExtra("monto", 0.0)
 
-
         val fechaPagoRecibida = intent.getStringExtra("fechaPago") ?: ""
-
 
         val fechaFormateadaParaMostrar = try {
 
@@ -50,7 +49,6 @@ class ComprobantePagoDiarioActivity : AppCompatActivity() {
             fechaPagoRecibida
         }
 
-
         // --- Asignar valores a los TextViews ---
         tvNombreUsuario.text = nombreUsuario
         tvDniUsuario.text = dni
@@ -60,13 +58,16 @@ class ComprobantePagoDiarioActivity : AppCompatActivity() {
         tvMonto.text = "$ ${"%.2f".format(monto)}"
 
         tvFechaEmision.text = fechaFormateadaParaMostrar
-        tvVencimiento.text = fechaFormateadaParaMostrar
-
+        //tvVencimiento.text = fechaFormateadaParaMostrar
 
         // Boton Volver (el rectangular de abajo)
         val btnVolver = findViewById<LinearLayout>(R.id.btnVolver)
+        /*btnVolver.setOnClickListener {
+            finish()
+        }*/
         btnVolver.setOnClickListener {
-            finish() // vuelve al menu anterior sin crear otra instancia
+            val intent = Intent(this, MenuActivity::class.java)
+            startActivity(intent)
         }
 
         // Icono superior volver (mismo comportamiento)

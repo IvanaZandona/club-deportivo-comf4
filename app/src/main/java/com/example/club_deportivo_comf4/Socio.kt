@@ -7,5 +7,9 @@ data class Socio(
     val dni: String,
     val email: String,
     val telefono: String,
-    val fechaInscripcion: String? = null
+    val fechaInscripcion: String? = null,
+    val fechaUltimoPago: String? = null,
+    val fechaVencimiento: String? = null,
+    val fechaNacimiento: String? = null
+
 )

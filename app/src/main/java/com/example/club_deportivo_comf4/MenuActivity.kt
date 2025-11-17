@@ -19,11 +19,6 @@ class MenuActivity : AppCompatActivity() {
             finish()
         }
 
-        // supuestamente poniendole un id de boton a los Frame (como hice) andarian como boton A CHEQUEAR
-        /* val btnBuscar = findViewById<FrameLayout>(R.id.btnBuscarSocio)
-        btnBuscar.setOnClickListener {
-            // acción del botón
-        }*/
         val btnRegistrarSocio = findViewById<FrameLayout>(R.id.btnRegistrar) //
         btnRegistrarSocio.setOnClickListener {
             val intent = Intent(this, RegistrarActivity::class.java)
@@ -35,8 +30,6 @@ class MenuActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-        // Botón (Frame) que abre el submenú de Pagos
         val btnPagos = findViewById<FrameLayout>(R.id.btnPagos)
         btnPagos.setOnClickListener {
             val intent = Intent(this, PagosActivity::class.java)

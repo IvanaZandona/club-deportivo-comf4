@@ -1,10 +1,7 @@
 package com.example.club_deportivo_comf4
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import android.content.Intent
 import android.widget.Button
 import android.widget.EditText
@@ -19,18 +16,8 @@ class MainActivity : AppCompatActivity() {
         val inputPassword = findViewById<EditText>(R.id.contrasena)
         val btnIngresar: Button = findViewById(R.id.btnIngresar)
 
-
-
-
         // Instancia de BD
         val db = DBHelper(this)
-
-        /*btnIngresar.setOnClickListener {
-            val intent = Intent(this, MenuActivity::class.java)
-            startActivity(intent)
-            finish()
-        }*/
-
 
         btnIngresar.setOnClickListener {
             val usuario = inputUsuario.text.toString().trim()
@@ -50,7 +37,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
             }
         }
-
 
     }
 }

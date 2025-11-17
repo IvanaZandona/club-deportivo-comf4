@@ -14,7 +14,6 @@ class ListadoNoSociosActivity : AppCompatActivity() {
 
     private lateinit var dbHelper: DBHelper
     private lateinit var adapter: NoSociosAdapter
-
     private lateinit var recyclerView: RecyclerView
     private lateinit var tvSinResultados: TextView
 

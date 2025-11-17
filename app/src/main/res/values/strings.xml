@@ -15,6 +15,7 @@
     <string name="listados">Listados</string>
     <string name="logo">Logo</string>
     <string name="volver">Volver</string>
+    <string name="volverInicio">Ir a inicio</string>
     <string name="efectivo">Efectivo</string>
     <string name="tarjeta">Tarjeta</string>
     <string name="cuotas">Cuotas:</string>
@@ -34,7 +35,7 @@
     <string name="fechaEmision">Fecha de emisión:</string>
     <string name="emisionPago">Lunes, 01 de septiembre de 2025</string>
     <string name="vencimiento">Vencimiento:</string>
-    <string name="vencimientoCuota">Cuota con vencimiento: 01 de octubre de 2025\nRosario, SF, Argentina</string>
+    <string name="vencimientoCuota">Cuota con vencimiento: 01 de octubre de 2025</string>
     <string name="montoFinal">Monto final:</string>
     <string name="montoNro">$30.000</string>
     <string name="comprobanteNro">Comprobante de pago #XXXX</string>
@@ -46,6 +47,9 @@
 
     <!-- títulos de Socios vencidos -->
     <string name="nombre">Nombre</string>
+    <string name="apellido">Apellido</string>
+    <string name="fechaNac">Fecha de nacimiento</string>
+    <string name="dni">DNI</string>
     <string name="estado">Estado</string>
     <string name="fecha_inscripcion">Fecha Inscripción</string>
     <string name="ultimo_vencimiento">Último vencimiento</string>"

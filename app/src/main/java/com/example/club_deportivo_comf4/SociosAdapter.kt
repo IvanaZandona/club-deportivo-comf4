@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import android.content.Intent
 
 
 class SociosAdapter(
@@ -53,13 +54,11 @@ class SociosAdapter(
 
         // Rellenar la tarjeta
         holder.tvNombrePrincipal.text = "${socioActual.nombre} ${socioActual.apellido}"
-
         holder.tvFechaInscripcion.text = socioActual.fechaInscripcion
-        "14/05/25".also { holder.tvVencimiento.text = it }
+        holder.tvVencimiento.text = socioActual.fechaVencimiento
         holder.tvDNI.text = socioActual.dni
         holder.tvEmail.text = socioActual.email
         holder.tvTelefono.text = socioActual.telefono
-
 
 
         // Estado inicial: contenido oculto
@@ -106,6 +105,15 @@ class SociosAdapter(
         }
 
         holder.btnImprimirCarnet.setOnClickListener {
+            val intent = Intent(context, CarnetActivity::class.java)
+
+            intent.putExtra("idUsuario", socioActual.idUsuario)
+            intent.putExtra("dni", socioActual.dni)
+            intent.putExtra("nombre", socioActual.nombre)
+            intent.putExtra("apellido", socioActual.apellido)
+            intent.putExtra("fechaNacimiento", socioActual.fechaNacimiento)
+
+            context.startActivity(intent)
         }
     }
 

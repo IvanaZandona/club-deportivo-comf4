@@ -46,10 +46,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="60dp"
-        android:background="@drawable/marco_borde_negro_fondo_blanco"
+        android:textColorHint="@color/colorInput"
+        android:background="@drawable/bg_input_registrar"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="10dp">
 
         <EditText
             android:id="@+id/edtBuscarDni"
