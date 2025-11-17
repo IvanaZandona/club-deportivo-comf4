@@ -29,15 +29,12 @@ class ListaSociosActivity : AppCompatActivity() {
     private fun configurarRecyclerView() {
         val recyclerView = findViewById<RecyclerView>(R.id.rvList)
 
-
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
         // Inicializar adapter
         adapter = SociosAdapter(listaSocios, dbHelper) { socio ->
-
             Log.d("ListaSocios", "Click en socio: ${socio.nombre} ${socio.apellido}")
-
         }
 
         recyclerView.adapter = adapter
@@ -64,7 +61,6 @@ class ListaSociosActivity : AppCompatActivity() {
         // Botón Volver
         val btnVolver = findViewById<Button>(R.id.btnVolver)
         btnVolver.setOnClickListener {
-            // finish() es mejor si vienes del menú, así vuelves al menú
             finish()
         }
 
@@ -79,7 +75,6 @@ class ListaSociosActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
         cargarSocios()
     }
 }

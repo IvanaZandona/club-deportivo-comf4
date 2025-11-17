@@ -9,8 +9,6 @@
     android:layout_height="match_parent">
 
 
-
-
     <ImageButton
         android:id="@+id/boton_flecha_atras"
         android:layout_width="48dp"
@@ -79,7 +77,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/bebasneue_regular"
                     android:gravity="center"
-                    android:text="CLUB_DEPORTIVO"
+                    android:text="@string/app_name"
                     android:textColor="#B00020"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -98,14 +96,9 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_perfil" />
 
-
-
-
                 <!-- Bloque de datos a la derecha de la imagen superior -->
 
-
                 <!-- Zona inferior izquierda: logo + bloque DNI (abajo de la imagen superior izquierda) -->
-
 
                 <LinearLayout
                     android:id="@+id/layoutDatos"
@@ -125,12 +118,10 @@
                         android:layout_marginLeft="17dp"
                         android:orientation="horizontal">
 
-
                         <TextView
                             android:layout_width="66dp"
                             android:layout_height="match_parent"
-                            android:text="Nombre" />
-
+                            android:text="@string/nombre" />
 
                         <TextView
                             android:layout_width="24dp"
@@ -138,9 +129,7 @@
                             android:layout_marginLeft="20dp"
                             android:text="ID" />
 
-
                     </LinearLayout>
-
 
                     <LinearLayout
                         android:layout_width="146dp"
@@ -151,6 +140,7 @@
 
 
                         <TextView
+                            android:id="@+id/tvNombreSocio"
                             android:layout_width="66dp"
                             android:layout_height="match_parent"
                             android:text="ROCIO"
@@ -158,6 +148,7 @@
 
 
                         <TextView
+                            android:id="@+id/tvUsuarioIDSocio"
                             android:layout_width="24dp"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="20dp"
@@ -178,11 +169,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="10dp"
-                            android:text="Apellido" />
+                            android:text="@string/apellido" />
                     </LinearLayout>
 
 
                     <LinearLayout
+                        android:id="@+id/tvApellidoSocio"
                         android:layout_width="146dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -191,6 +183,7 @@
 
 
                         <TextView
+                            android:id="@+id/txtApellido"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:text="CEJAS"
@@ -210,11 +203,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="10dp"
-                            android:text="Fecha de nacimiento" />
+                            android:text="@string/fechaNac" />
                     </LinearLayout>
 
 
                     <LinearLayout
+                        android:id="@+id/tvFechaNac"
                         android:layout_width="146dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -223,6 +217,7 @@
 
 
                         <TextView
+                            android:id="@+id/txtFechaNac"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:text="20/06/1995"
@@ -242,9 +237,7 @@
                     android:layout_toStartOf="@id/layoutDatos"
                     android:orientation="horizontal">
 
-
                     <!-- Imagen inferior izquierda (logo) -->
-
 
                     <!-- Bloque DNI -->
                     <LinearLayout
@@ -259,7 +252,7 @@
                             android:id="@+id/tvDniLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="DNI"
+                            android:text="@string/dni"
                             android:textColor="@color/colorGris"
                             android:textSize="12sp"
                             android:textStyle="bold" />

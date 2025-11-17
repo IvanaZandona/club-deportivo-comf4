@@ -6,8 +6,10 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import java.util.Calendar
+import java.text.SimpleDateFormat
+import java.util.Locale
 
-class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 16) {
+class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db", null, 17) {
 
     // ==================== CONFIGURACIÓN DE LA BASE DE DATOS ====================
 
@@ -23,7 +25,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         db.execSQL("CREATE TABLE administradores (id INTEGER PRIMARY KEY, usuario TEXT UNIQUE NOT NULL, password TEXT NOT NULL)")
         db.execSQL("CREATE TABLE usuarios (id INTEGER PRIMARY KEY, nombre TEXT, apellido TEXT, dni TEXT UNIQUE NOT NULL, fecha_nacimiento TEXT, telefono TEXT, email TEXT, tipo_usuario INTEGER)")
         db.execSQL("CREATE TABLE actividades (id INTEGER PRIMARY KEY, nombre TEXT UNIQUE NOT NULL, descripcion TEXT)")
-        db.execSQL("CREATE TABLE socios (id INTEGER PRIMARY KEY, usuario_id INTEGER, fecha_alta TEXT, fecha_ultimo_pago TEXT, apto_fisico INTEGER, ficha_medica INTEGER, FOREIGN KEY(usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE)")
+        db.execSQL("CREATE TABLE socios (id INTEGER PRIMARY KEY, usuario_id INTEGER, fecha_alta TEXT, fecha_ultimo_pago TEXT, fecha_vencimiento TEXT, apto_fisico INTEGER, ficha_medica INTEGER, FOREIGN KEY(usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE)")
         db.execSQL("CREATE TABLE no_socios (id INTEGER PRIMARY KEY, usuario_id INTEGER, fecha_registro TEXT, FOREIGN KEY(usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE)")
         db.execSQL("CREATE TABLE pagos (id INTEGER PRIMARY KEY, usuario_id INTEGER, tipo_pago TEXT, monto_total REAL, metodo_pago TEXT, cuotas INTEGER, fecha_pago TEXT, estado_pago INTEGER, FOREIGN KEY(usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE)")
         db.execSQL("CREATE TABLE pagos_socios (id INTEGER PRIMARY KEY, pago_id INTEGER, mes INTEGER, anio INTEGER, FOREIGN KEY(pago_id) REFERENCES pagos(id) ON DELETE CASCADE)")
@@ -94,6 +96,21 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
         }
     }
 
+    fun obtenerUltimaFechaPagoReal(usuarioId: Long): String? {
+        val db = readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT fecha_pago FROM pagos WHERE usuario_id = ? ORDER BY id DESC LIMIT 1",
+            arrayOf(usuarioId.toString())
+        )
+        cursor.use {
+            if (it.moveToFirst()) {
+                return it.getString(0)
+            }
+        }
+        return null
+    }
+
+
     // ==================== FUNCIONES DE USUARIO ====================
 
     fun insertarUsuario(nombre: String, apellido: String, dni: String, fechaNac: String, telefono: String, email: String, tipoUsuario: Int): Long {
@@ -144,9 +161,28 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
     // ==================== FUNCIONES DE SOCIOS ====================
 
     fun insertarSocio(usuarioId: Long, fechaAlta: String, aptoFisico: Int, fichaMedica: Int): Long {
+        // Calcular primer vencimiento (fechaAlta + 1 mes)
+        val fechaVencimiento = try {
+            // Parseamos fechaAlta en formato dd/MM/yyyy
+            val sdfAlta = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val dateAlta = sdfAlta.parse(fechaAlta)!!
+
+            // Sumamos 1 mes
+            val cal = Calendar.getInstance()
+            cal.time = dateAlta
+            cal.add(Calendar.MONTH, 1)
+
+            // Guardamos vencimiento también en formato dd/MM/yyyy
+            sdfAlta.format(cal.time)
+        } catch (e: Exception) {
+            fechaAlta
+        }
+
         val values = ContentValues().apply {
             put("usuario_id", usuarioId)
             put("fecha_alta", fechaAlta)
+            put("fecha_ultimo_pago", fechaAlta)
+            put("fecha_vencimiento", fechaVencimiento)
             put("apto_fisico", aptoFisico)
             put("ficha_medica", fichaMedica)
         }
@@ -156,7 +192,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
     fun obtenerSocioPorDNI(dni: String): Socio? {
         var socio: Socio? = null
         readableDatabase.rawQuery("""
-            SELECT u.id, u.nombre, u.apellido, u.dni, u.email, u.telefono, s.fecha_alta
+            SELECT u.id, u.nombre, u.apellido, u.dni, u.email, u.telefono, s.fecha_alta, s.fecha_ultimo_pago, s.fecha_vencimiento
             FROM usuarios u INNER JOIN socios s ON u.id = s.usuario_id
             WHERE u.dni = ? AND u.tipo_usuario = 1
         """, arrayOf(dni)).use { cursor ->
@@ -168,7 +204,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
                     dni = cursor.getString(cursor.getColumnIndexOrThrow("dni")),
                     email = cursor.getString(cursor.getColumnIndexOrThrow("email")),
                     telefono = cursor.getString(cursor.getColumnIndexOrThrow("telefono")),
-                    fechaInscripcion = cursor.getString(cursor.getColumnIndexOrThrow("fecha_alta"))
+                    fechaInscripcion = cursor.getString(cursor.getColumnIndexOrThrow("fecha_alta")),
+                    fechaUltimoPago = cursor.getString(cursor.getColumnIndexOrThrow("fecha_ultimo_pago")),
+                    fechaVencimiento = cursor.getString(cursor.getColumnIndexOrThrow("fecha_vencimiento"))
+
                 )
             }
         }
@@ -200,9 +239,24 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
 
             Log.d("DBHelper", "Fecha de pago final: $fechaPagoFinal")
 
+            // Obtener el último vencimiento actual del socio
+            val cursorVenc = db.rawQuery(
+                "SELECT fecha_vencimiento FROM socios WHERE usuario_id = ?",
+                arrayOf(usuarioId.toString())
+            )
+            val ultimoVenc = if (cursorVenc.moveToFirst()) cursorVenc.getString(0) else fechaPagoFinal
+            cursorVenc.close()
+
+            // Si no existe último vencimiento (primer pago), usamos fechaPagoFinal como base
+            val baseParaCalcular = ultimoVenc ?: fechaPagoFinal
+
+            // Calcular el próximo vencimiento sumando 1 mes
+            val nuevoVencimiento = calcularFechaVencimiento(baseParaCalcular)
+
             // Actualizar fecha de último pago
             val updateValues = ContentValues().apply {
                 put("fecha_ultimo_pago", fechaPagoFinal)
+                put("fecha_vencimiento", nuevoVencimiento)
             }
             db.update("socios", updateValues, "usuario_id = ?", arrayOf(usuarioId.toString()))
 
@@ -493,32 +547,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "ClubDeportivo.db",
             db.insertOrThrow("pagos_no_socios", null, noSocioValues)
         }
         return pagoId
-    }
-
-    private fun obtenerFechaAltaSocio(usuarioId: Long): String? {
-        return readableDatabase.rawQuery(
-            "SELECT fecha_alta FROM socios WHERE usuario_id = ?",
-            arrayOf(usuarioId.toString())
-        ).use { cursor ->
-            if (cursor.moveToFirst()) {
-                cursor.getString(cursor.getColumnIndexOrThrow("fecha_alta"))
-            } else {
-                null
-            }
-        }
-    }
-
-    private fun obtenerTotalPagos(usuarioId: Long): Int {
-        return readableDatabase.rawQuery(
-            "SELECT COUNT(*) FROM pagos WHERE usuario_id = ?",
-            arrayOf(usuarioId.toString())
-        ).use { cursor ->
-            if (cursor.moveToFirst()) {
-                cursor.getInt(0)
-            } else {
-                0
-            }
-        }
     }
 
     private fun convertirFechaParaComparacion(fechaOriginal: String): String? {

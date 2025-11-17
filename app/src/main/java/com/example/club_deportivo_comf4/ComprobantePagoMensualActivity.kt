@@ -1,5 +1,6 @@
 package com.example.club_deportivo_comf4
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -16,7 +17,11 @@ class ComprobantePagoMensualActivity : AppCompatActivity() {
         setContentView(R.layout.activity_comprobante_pago_mensual)
 
         val btnVolver = findViewById<LinearLayout>(R.id.btnVolver)
-        btnVolver.setOnClickListener { finish() }
+        //btnVolver.setOnClickListener { finish() }
+        btnVolver.setOnClickListener {
+            val intent = Intent(this, MenuActivity::class.java)
+            startActivity(intent)
+        }
 
         val iconoVolver = findViewById<android.widget.ImageView>(R.id.iconoVolver)
         iconoVolver.setOnClickListener { finish() }
@@ -36,10 +41,14 @@ class ComprobantePagoMensualActivity : AppCompatActivity() {
         val monto = intent.getDoubleExtra("monto", 0.0)
 
         val fechaPago = intent.getStringExtra("fechaPago") ?: ""
-
         val fechaAlta = intent.getStringExtra("fechaAlta") ?: ""
+        val fechaUltimoPago = intent.getStringExtra("fechaUltimoPago") ?: ""
+        val fechaVencimiento = intent.getStringExtra("fechaVencimiento") ?: ""
 
-        val sdfOriginal = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val fechaVencimientoStr = fechaVencimiento // ya viene calculada
+        tvVencimiento.text = fechaVencimientoStr
+
+        val sdfOriginal = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
         val sdfMostrar = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
         // Convertir fecha de pago
@@ -50,8 +59,15 @@ class ComprobantePagoMensualActivity : AppCompatActivity() {
             fechaPago
         }
 
+        /*val fechaVencimientoStr = try {
+            val date = sdfOriginal.parse(fechaVencimiento)
+            sdfMostrar.format(date!!)
+        } catch (e: Exception) {
+            fechaVencimiento
+        }*/
+
         // Convertir fecha alta y sumar 1 mes
-        val fechaVencimientoStr = try {
+        /*val fechaVencimientoStr = try {
             val partes = fechaAlta.split("-")
             val anio = partes[0].toInt()
             val mes = partes[1].toInt() - 1
@@ -66,7 +82,7 @@ class ComprobantePagoMensualActivity : AppCompatActivity() {
             sdfMostrar.format(venc)
         } catch (e: Exception) {
             "Fecha inválida"
-        }
+        }*/
 
         tvNombreUsuario.text = nombreUsuario
         tvDniUsuario.text = dni

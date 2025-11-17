@@ -110,6 +110,8 @@ class PagoMensualActivity : AppCompatActivity() {
         if (exito) {
             Toast.makeText(this, "Pago registrado correctamente", Toast.LENGTH_SHORT).show()
 
+            val fechaPagoReal = dbHelper.obtenerUltimaFechaPagoReal(socio.idUsuario) ?: dbHelper.fechaActual()
+
             // Para el comprobante, usar fecha_alta como fecha de pago (es lo que se usó para primer pago)
             val intent = Intent(this, ComprobantePagoMensualActivity::class.java).apply {
                 putExtra("dni", dni)
@@ -117,8 +119,12 @@ class PagoMensualActivity : AppCompatActivity() {
                 putExtra("metodoPago", metodoPago)
                 putExtra("cuotas", cuotasSeleccionadas)
                 putExtra("monto", monto)
-                putExtra("fechaPago", socio.fechaInscripcion) //  Usar fecha de inscripción
+                //putExtra("fechaPago", socio.fechaInscripcion) //  Usar fecha de inscripción
+                putExtra("fechaPago", fechaPagoReal)
                 putExtra("fechaAlta", socio.fechaInscripcion)
+                putExtra("fechaUltimoPago", socio.fechaUltimoPago)
+                putExtra("fechaVencimiento", socio.fechaVencimiento)
+
             }
             startActivity(intent)
             finish()

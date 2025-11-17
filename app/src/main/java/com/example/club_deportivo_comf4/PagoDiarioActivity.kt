@@ -10,6 +10,7 @@ class PagoDiarioActivity : AppCompatActivity() {
 
     private val dbHelper: DBHelper by lazy { DBHelper(this) }
 
+    private var fechaDePago: String = ""
     private lateinit var inputDNI: EditText
     private lateinit var inputMonto: EditText
     private lateinit var spinnerActividad: Spinner
@@ -105,15 +106,13 @@ class PagoDiarioActivity : AppCompatActivity() {
             return
         }
 
-        val fechaDePago = dbHelper.fechaHoyString()
-
         val idTransaccion = dbHelper.registrarPagoNoSocio(
             dni = dni,
             monto = monto,
             metodoPago = metodoPago,
             cuotas = cuotasSeleccionadas.toInt(),
             nombreActividad = actividadSeleccionada,
-            fechaDePago = fechaDePago
+            fechaDePago = noSocio.fechaRegistro
         )
 
         if (idTransaccion > -1L) {
@@ -126,7 +125,7 @@ class PagoDiarioActivity : AppCompatActivity() {
                 putExtra("metodoPago", metodoPago)
                 putExtra("cuotas", cuotasSeleccionadas)
                 putExtra("monto", monto)
-                putExtra("fechaPago", fechaDePago)
+                putExtra("fechaPago", noSocio.fechaRegistro)
             }
             startActivity(intent)
             finish()

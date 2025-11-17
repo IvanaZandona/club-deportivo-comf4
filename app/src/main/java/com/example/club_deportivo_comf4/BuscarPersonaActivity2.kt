@@ -80,9 +80,11 @@ class BuscarPersonaActivity2 : AppCompatActivity() {
         contenedorTarjeta.removeAllViews()
         contenedorTarjeta.visibility = View.VISIBLE
 
-        val tarjeta = layoutInflater.inflate(R.layout.tarjeta_usuario_buscador, contenedorTarjeta, false)
+        val tarjeta =
+            layoutInflater.inflate(R.layout.tarjeta_usuario_buscador, contenedorTarjeta, false)
 
-        tarjeta.findViewById<TextView>(R.id.nombrePrincipal).text = "${usuario.nombre} ${usuario.apellido}"
+        tarjeta.findViewById<TextView>(R.id.nombrePrincipal).text =
+            "${usuario.nombre} ${usuario.apellido}"
         tarjeta.findViewById<TextView>(R.id.tvDNI).text = usuario.dni
         tarjeta.findViewById<TextView>(R.id.tvEmail).text = usuario.email
         tarjeta.findViewById<TextView>(R.id.tvTelefono).text = usuario.telefono
@@ -90,7 +92,17 @@ class BuscarPersonaActivity2 : AppCompatActivity() {
         val estado = if (usuario.tipoUsuario == 1) "Socio" else "No Socio"
         tarjeta.findViewById<TextView>(R.id.tvEstado).text = estado
 
-        tarjeta.findViewById<TextView>(R.id.tvFechaInscripcion).text = usuario.fechaNacimiento
+        if (usuario.tipoUsuario == 1) {
+            val socio = db.obtenerSocioPorDNI(usuario.dni)?.let { socio ->
+                tarjeta.findViewById<TextView>(R.id.tvFechaInscripcion).text = socio.fechaInscripcion
+                tarjeta.findViewById<TextView>(R.id.tvUltimoVencimiento).text = socio.fechaVencimiento
+
+            }
+        } else if (usuario.tipoUsuario == 2) {
+            val noSocio = db.obtenerNoSocioPorDNI(usuario.dni)?.let { noSocio ->
+                tarjeta.findViewById<TextView>(R.id.tvFechaInscripcion).text = noSocio.fechaRegistro
+            }
+        }
 
 
         // Botones
@@ -99,11 +111,27 @@ class BuscarPersonaActivity2 : AppCompatActivity() {
         }
 
         tarjeta.findViewById<ImageButton>(R.id.btnBorrar).setOnClickListener {
-            Toast.makeText(this, "Borrar usuario ${usuario.nombre}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Debe borrar al usuario desde los listados correspondientes", Toast.LENGTH_SHORT).show()
         }
 
-        tarjeta.findViewById<ImageButton>(R.id.btnImprimirCarnet).setOnClickListener {
-            Toast.makeText(this, "Imprimir carnet ${usuario.nombre}", Toast.LENGTH_SHORT).show()
+        // accede a boton de carnet solo si es socio
+        val btnCarnet = tarjeta.findViewById<ImageButton>(R.id.btnImprimirCarnet)
+        btnCarnet.setOnClickListener {
+            if (usuario.tipoUsuario != 1) {
+                Toast.makeText(this, "Solo los socios tienen carnet", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val socio = db.obtenerSocioPorDNI(usuario.dni)
+
+            val intent = Intent(this, CarnetActivity::class.java)
+            intent.putExtra("nombre", usuario.nombre)
+            intent.putExtra("apellido", usuario.apellido)
+            intent.putExtra("dni", usuario.dni)
+            intent.putExtra("fechaNacimiento", usuario.fechaNacimiento)
+            intent.putExtra("idUsuario", usuario.id)
+
+            startActivity(intent)
         }
 
         // Agregamos la tarjeta al contenedor
