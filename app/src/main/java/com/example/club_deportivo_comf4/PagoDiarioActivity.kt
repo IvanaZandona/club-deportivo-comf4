@@ -106,13 +106,24 @@ class PagoDiarioActivity : AppCompatActivity() {
             return
         }
 
+        val usuarioId = dbHelper.obtenerUsuarioIdPorDNI(dni)!!
+        val ultimaFechaPago = dbHelper.obtenerUltimaFechaPagoReal(usuarioId)
+
+        val fechaDePago = if (ultimaFechaPago == null) {
+            // Primer pago usa la fecha de registro
+            noSocio.fechaRegistro
+        } else {
+            // Para pagos posteriores usa fecha actual
+            dbHelper.fechaHoyString()
+        }
+
         val idTransaccion = dbHelper.registrarPagoNoSocio(
             dni = dni,
             monto = monto,
             metodoPago = metodoPago,
             cuotas = cuotasSeleccionadas.toInt(),
             nombreActividad = actividadSeleccionada,
-            fechaDePago = noSocio.fechaRegistro
+            fechaDePago = fechaDePago
         )
 
         if (idTransaccion > -1L) {
@@ -125,7 +136,7 @@ class PagoDiarioActivity : AppCompatActivity() {
                 putExtra("metodoPago", metodoPago)
                 putExtra("cuotas", cuotasSeleccionadas)
                 putExtra("monto", monto)
-                putExtra("fechaPago", noSocio.fechaRegistro)
+                putExtra("fechaPago", fechaDePago)
             }
             startActivity(intent)
             finish()
